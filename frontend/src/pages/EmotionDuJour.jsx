@@ -43,7 +43,10 @@ const EmotionDuJour = () => {
       localStorage.setItem("moodDuJour", emotion.value);
       navigate("/citations");
     } catch (err) {
-      console.error(err);
+      console.error("ERREUR MOOD :", err.response?.data || err.message);
+      // On navigue quand même vers citations
+      localStorage.setItem("moodDuJour", emotion.value);
+      navigate("/citations");
     }
   };
 
