@@ -26,6 +26,10 @@ app.use(
   }),
 );
 
+// Routes
+const authRoutes = require("./routes/authRoutes");
+app.use("/api", authRoutes);
+
 // Lancement serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
