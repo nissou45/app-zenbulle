@@ -1,28 +1,35 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db");
 const auth = require("../middlewares/auth");
+const citationsLocales = require("../data/citations.json");
 
-// GET citation selon l'humeur
-router.get("/citations", auth, (req, res) => {
+// Fonction pour récupérer une citation depuis ZenQuotes API
+const getCitationFromAPI = async () => {
+  const response = await fetch("https://zenquotes.io/api/random");
+  const data = await response.json();
+  return data[0].q + " — " + data[0].a;
+};
+
+// Fonction pour récupérer une citation locale selon l'humeur
+const getCitationLocale = (mood) => {
+  const liste =
+    citationsLocales[mood] || Object.values(citationsLocales).flat();
+  return liste[Math.floor(Math.random() * liste.length)];
+};
+
+// GET citation
+router.get("/citations", auth, async (req, res) => {
   const { mood } = req.query;
 
-  if (mood) {
-    db.query(
-      "SELECT * FROM citations WHERE mood = ? ORDER BY RAND() LIMIT 1",
-      [mood],
-      (err, rows) => {
-        if (err) return res.status(500).json(err);
-        if (!rows.length)
-          return res.status(404).json({ message: "Aucune citation trouvée" });
-        res.json(rows[0]);
-      },
-    );
-  } else {
-    db.query("SELECT * FROM citations ORDER BY RAND() LIMIT 1", (err, rows) => {
-      if (err) return res.status(500).json(err);
-      res.json(rows[0]);
-    });
+  try {
+    // On essaie l'API externe d'abord
+    const citation = await getCitationFromAPI();
+    return res.json({ text: citation, source: "api" });
+  } catch (err) {
+    // Si l'API est indisponible → fallback JSON local
+    console.log("API citations indisponible, fallback local");
+    const citation = getCitationLocale(mood);
+    return res.json({ text: citation, source: "local" });
   }
 });
 
