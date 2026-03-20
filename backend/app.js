@@ -29,6 +29,8 @@ app.use(
 // Routes
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes);
+const journalRoutes = require("./routes/journalRoutes");
+app.use("/api", journalRoutes);
 
 // Lancement serveur
 const PORT = process.env.PORT || 3000;
