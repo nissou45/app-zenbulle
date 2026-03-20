@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@theme {
+  --color-ivoire: #f5f0ea;
+  --color-sable: #d4c5b0;
+  --color-terre: #8b6f52;
+  --color-encre: #2c2016;
+
+  --font-caveat: "Caveat Brush", cursive;
+  --font-cormorant: "Cormorant Garamond", serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f5f0ea;
+  font-family: "Cormorant Garamond", serif;
+  color: #2c2016;
+}
