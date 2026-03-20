@@ -36,6 +36,8 @@ app.use("/api", journalRoutes);
 const moodsRoutes = require("./routes/moodsRoutes");
 app.use("/api", moodsRoutes);
 
+const citationsRoutes = require("./routes/citationsRoutes");
+app.use("/api", citationsRoutes);
 // Lancement serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
