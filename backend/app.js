@@ -38,6 +38,10 @@ app.use("/api", moodsRoutes);
 
 const citationsRoutes = require("./routes/citationsRoutes");
 app.use("/api", citationsRoutes);
+
+const exercicesRoutes = require("./routes/exercicesRoutes");
+app.use("/api", exercicesRoutes);
+
 // Lancement serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
