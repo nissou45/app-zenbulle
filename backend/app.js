@@ -29,8 +29,12 @@ app.use(
 // Routes
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes);
+
 const journalRoutes = require("./routes/journalRoutes");
 app.use("/api", journalRoutes);
+
+const moodsRoutes = require("./routes/moodsRoutes");
+app.use("/api", moodsRoutes);
 
 // Lancement serveur
 const PORT = process.env.PORT || 3000;
