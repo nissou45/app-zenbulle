@@ -22,7 +22,7 @@ const Inscription = () => {
 
     try {
       await register(email, password, pseudo);
-      navigate("/dashboard");
+      navigate("/questionnaire");
     } catch (err) {
       setErreur("Une erreur est survenue, réessaie");
     }
