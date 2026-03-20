@@ -1,0 +1,37 @@
+{
+  "joie": [
+    "Le bonheur est un choix que l'on renouvelle chaque matin.",
+    "La joie est la forme la plus simple de gratitude.",
+    "Souris au monde et le monde te sourira.",
+    "Chaque jour est une nouvelle chance d'être heureux.",
+    "Le bonheur n'est pas une destination, c'est une façon de voyager."
+  ],
+  "calme": [
+    "La paix commence là où l'attente s'arrête.",
+    "Respire. Tout va bien se passer.",
+    "Le calme est la plus grande force qui soit.",
+    "Dans le silence, on trouve les vraies réponses.",
+    "La sérénité est un trésor que personne ne peut te voler."
+  ],
+  "triste": [
+    "Après la pluie vient toujours le beau temps.",
+    "La tristesse est un nuage qui passe.",
+    "Tes larmes sont la preuve que tu as aimé.",
+    "Même les nuits les plus sombres finissent par s'éclairer.",
+    "Tu as le droit de ne pas aller bien, et aussi de guérir."
+  ],
+  "anxieux": [
+    "Respire. Tu es exactement là où tu dois être.",
+    "Un pas à la fois, tu y arriveras.",
+    "L'inquiétude ne change pas demain, elle vole juste aujourd'hui.",
+    "Tu as déjà traversé des moments difficiles. Tu peux traverser celui-ci.",
+    "Pose tes pensées, respire, et recommence."
+  ],
+  "fatigue": [
+    "Le repos est aussi du travail.",
+    "Ton corps a besoin de silence pour guérir.",
+    "Se reposer n'est pas abandonner, c'est se préparer.",
+    "Prends soin de toi comme tu prendrais soin de quelqu'un que tu aimes.",
+    "La fatigue est un message de ton corps. Écoute-le."
+  ]
+}
