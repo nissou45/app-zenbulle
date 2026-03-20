@@ -2,11 +2,36 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 
 const emotions = [
-  { label: "joyeux", emoji: "😊", value: "joie" },
-  { label: "calme", emoji: "😌", value: "calme" },
-  { label: "triste", emoji: "😔", value: "triste" },
-  { label: "anxieux", emoji: "😰", value: "anxieux" },
-  { label: "fatigué", emoji: "😴", value: "fatigue" },
+  {
+    label: "joyeux",
+    value: "joie",
+    couleur: "#D4A853",
+    bg: "rgba(212,168,83,0.08)",
+  },
+  {
+    label: "calme",
+    value: "calme",
+    couleur: "#7BA7BC",
+    bg: "rgba(123,167,188,0.08)",
+  },
+  {
+    label: "triste",
+    value: "triste",
+    couleur: "#8B7BA8",
+    bg: "rgba(139,123,168,0.08)",
+  },
+  {
+    label: "anxieux",
+    value: "anxieux",
+    couleur: "#BC7B7B",
+    bg: "rgba(188,123,123,0.08)",
+  },
+  {
+    label: "fatigué",
+    value: "fatigue",
+    couleur: "#8B9E8B",
+    bg: "rgba(139,158,139,0.08)",
+  },
 ];
 
 const EmotionDuJour = () => {
@@ -31,7 +56,6 @@ const EmotionDuJour = () => {
         flexDirection: "column",
       }}
     >
-      {/* Header */}
       <header
         style={{
           display: "flex",
@@ -66,7 +90,6 @@ const EmotionDuJour = () => {
         </Link>
       </header>
 
-      {/* Contenu */}
       <main
         style={{
           flex: 1,
@@ -108,13 +131,13 @@ const EmotionDuJour = () => {
           style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
         />
 
-        {/* Emotions */}
         <div
           style={{
             display: "flex",
-            gap: "16px",
-            flexWrap: "wrap",
-            justifyContent: "center",
+            flexDirection: "column",
+            gap: "12px",
+            width: "100%",
+            maxWidth: "320px",
           }}
         >
           {emotions.map((emotion) => (
@@ -122,35 +145,26 @@ const EmotionDuJour = () => {
               key={emotion.value}
               onClick={() => handleEmotion(emotion)}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "8px",
-                padding: "20px 24px",
-                background: "rgba(255,255,255,0.6)",
-                border: "0.5px solid #D4C5B0",
-                borderRadius: "16px",
+                padding: "18px 32px",
+                background: emotion.bg,
+                border: `0.5px solid ${emotion.couleur}`,
+                borderRadius: "40px",
                 cursor: "pointer",
+                fontFamily: "'Cormorant Garamond', serif",
+                fontStyle: "italic",
+                fontSize: "22px",
+                color: emotion.couleur,
+                letterSpacing: "0.04em",
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.border = "0.5px solid #2C2016")
+                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
               }
               onMouseLeave={(e) =>
-                (e.currentTarget.style.border = "0.5px solid #D4C5B0")
+                (e.currentTarget.style.background = emotion.bg)
               }
             >
-              <span style={{ fontSize: "32px" }}>{emotion.emoji}</span>
-              <span
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontStyle: "italic",
-                  fontSize: "15px",
-                  color: "#2C2016",
-                }}
-              >
-                {emotion.label}
-              </span>
+              {emotion.label}
             </button>
           ))}
         </div>
