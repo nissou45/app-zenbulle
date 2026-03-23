@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Logo from "../assets/logo.svg";
 
 const Accueil = () => {
   const navigate = useNavigate();
@@ -20,15 +21,7 @@ const Accueil = () => {
           padding: "24px 32px",
         }}
       >
-        <span
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-          }}
-        >
-          ZenBulle
-        </span>
+        <img src={Logo} alt="ZenBulle" style={{ height: "40px" }} />
         <button
           onClick={() => navigate("/menu")}
           style={{
@@ -122,7 +115,7 @@ const Accueil = () => {
         </button>
 
         <button
-          onClick={() => navigate("/inscription")}
+          onClick={() => navigate("/questionnaire")}
           style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontStyle: "italic",
