@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Header from "../components/Header";
 
 const Inscription = () => {
   const navigate = useNavigate();
@@ -29,104 +30,27 @@ const Inscription = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-            textDecoration: "none",
-          }}
-        >
-          ZenBulle
-        </Link>
-      </header>
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header />
 
-      {/* Contenu */}
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 32px",
-          gap: "32px",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-          }}
-        >
+      <main className="flex-1 flex flex-col justify-center items-center px-8 gap-8">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
           bienvenue
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "40px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-            textAlign: "center",
-          }}
-        >
+        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15] text-center">
           crée ta bulle
         </h1>
 
-        <div
-          style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
-        />
+        <div className="w-8 h-[0.5px] bg-sable" />
 
-        {/* Formulaire */}
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            width: "100%",
-            maxWidth: "360px",
-          }}
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-[360px]">
           <input
             type="text"
             placeholder="ton prénom"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
-            style={{
-              padding: "14px 20px",
-              borderRadius: "40px",
-              border: "1px solid #D4C5B0",
-              background: "rgba(255,255,255,0.6)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "16px",
-              color: "#2C2016",
-              outline: "none",
-            }}
+            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
           />
 
           <input
@@ -134,16 +58,7 @@ const Inscription = () => {
             placeholder="ton email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{
-              padding: "14px 20px",
-              borderRadius: "40px",
-              border: "1px solid #D4C5B0",
-              background: "rgba(255,255,255,0.6)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "16px",
-              color: "#2C2016",
-              outline: "none",
-            }}
+            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
           />
 
           <input
@@ -151,16 +66,7 @@ const Inscription = () => {
             placeholder="ton mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              padding: "14px 20px",
-              borderRadius: "40px",
-              border: "1px solid #D4C5B0",
-              background: "rgba(255,255,255,0.6)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "16px",
-              color: "#2C2016",
-              outline: "none",
-            }}
+            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
           />
 
           <input
@@ -168,45 +74,18 @@ const Inscription = () => {
             placeholder="confirme ton mot de passe"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            style={{
-              padding: "14px 20px",
-              borderRadius: "40px",
-              border: "1px solid #D4C5B0",
-              background: "rgba(255,255,255,0.6)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "16px",
-              color: "#2C2016",
-              outline: "none",
-            }}
+            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
           />
 
           {erreur && (
-            <p
-              style={{
-                color: "#a85100",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "14px",
-                textAlign: "center",
-              }}
-            >
+            <p className="text-[#a85100] font-cormorant text-sm text-center">
               {erreur}
             </p>
           )}
 
           <button
             type="submit"
-            style={{
-              marginTop: "8px",
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              cursor: "pointer",
-            }}
+            className="mt-2 px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] cursor-pointer"
           >
             créer mon compte →
           </button>
@@ -214,15 +93,7 @@ const Inscription = () => {
 
         <Link
           to="/connexion"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            color: "#8B6F52",
-            fontSize: "14px",
-            textDecoration: "none",
-            borderBottom: "0.5px solid #8B6F52",
-            paddingBottom: "2px",
-          }}
+          className="font-cormorant italic text-terre text-sm no-underline border-b border-terre pb-0.5"
         >
           déjà une bulle ? se connecter
         </Link>

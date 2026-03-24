@@ -1,132 +1,41 @@
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.svg";
+import Header from "../components/Header";
 
 const Accueil = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <img src={Logo} alt="ZenBulle" style={{ height: "40px" }} />
-        <button
-          onClick={() => navigate("/menu")}
-          style={{
-            fontSize: "13px",
-            color: "#8B6F52",
-            border: "0.5px solid #D4C5B0",
-            borderRadius: "20px",
-            padding: "6px 16px",
-            background: "transparent",
-            cursor: "pointer",
-          }}
-        >
-          menu
-        </button>
-      </header>
-
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 32px",
-          textAlign: "center",
-          gap: "24px",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-          }}
-        >
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header />
+      <main className="flex-1 flex flex-col justify-center items-center px-8 text-center gap-6">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
           ton espace intérieur
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "48px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-          }}
-        >
+        <h1 className="font-cormorant text-5xl font-light italic text-encre leading-[1.15]">
           ferme les yeux
           <br />
           sur le monde
         </h1>
 
-        <p
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "18px",
-            color: "#8B6F52",
-            lineHeight: 1.8,
-          }}
-        >
+        <p className="font-cormorant text-lg text-terre leading-[1.8]">
           un moment rien que pour toi.
           <br />
           respire, ressens, écris.
         </p>
 
-        <div
-          style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
-        />
+        <div className="w-8 h-[0.5px] bg-sable" />
 
         <button
           onClick={() => navigate("/connexion")}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            background: "transparent",
-            color: "#2C2016",
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            fontSize: "18px",
-            padding: "14px 40px",
-            border: "1px solid #2C2016",
-            borderRadius: "40px",
-            cursor: "pointer",
-          }}
+          className="flex items-center gap-3 bg-transparent text-encre font-cormorant italic text-lg px-10 py-3.5 border border-encre rounded-[40px] cursor-pointer"
         >
           découvrir ma bulle <span>→</span>
         </button>
 
         <button
           onClick={() => navigate("/questionnaire")}
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            color: "#2C2016",
-            fontSize: "14px",
-            background: "transparent",
-            border: "none",
-            borderBottom: "1px solid #2C2016",
-            cursor: "pointer",
-            paddingBottom: "2px",
-          }}
+          className="font-cormorant italic text-encre text-sm bg-transparent border-0 border-b border-encre cursor-pointer pb-0.5"
         >
           quelques questions pour commencer
         </button>
