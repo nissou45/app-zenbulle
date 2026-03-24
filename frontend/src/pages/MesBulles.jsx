@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import api from "../services/api";
+import Header from "../components/Header";
 
 const MesBulles = () => {
   const [entries, setEntries] = useState([]);
@@ -24,135 +24,37 @@ const MesBulles = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-            textDecoration: "none",
-          }}
-        >
-          ZenBulle
-        </Link>
-        <Link
-          to="/dashboard"
-          style={{
-            fontSize: "13px",
-            color: "#8B6F52",
-            border: "0.5px solid #D4C5B0",
-            borderRadius: "20px",
-            padding: "6px 16px",
-            textDecoration: "none",
-          }}
-        >
-          retour
-        </Link>
-      </header>
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header retour="/dashboard" />
 
-      {/* Contenu */}
-      <main
-        style={{
-          flex: 1,
-          padding: "32px",
-          maxWidth: "600px",
-          margin: "0 auto",
-          width: "100%",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
+      <main className="flex-1 p-8 max-w-[600px] mx-auto w-full">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant text-center mb-4">
           ton voyage intérieur
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "40px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-            textAlign: "center",
-            marginBottom: "32px",
-          }}
-        >
+        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15] text-center mb-8">
           mes bulles
         </h1>
 
         {loading && (
-          <p
-            style={{
-              textAlign: "center",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              color: "#8B6F52",
-            }}
-          >
+          <p className="text-center font-cormorant italic text-terre">
             chargement...
           </p>
         )}
 
         {!loading && entries.length === 0 && (
-          <p
-            style={{
-              textAlign: "center",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              color: "#8B6F52",
-              fontSize: "18px",
-            }}
-          >
+          <p className="text-center font-cormorant italic text-terre text-lg">
             tu n'as encore écrit aucune bulle 🫧
           </p>
         )}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div className="flex flex-col gap-4">
           {entries.map((entry) => (
             <div
               key={entry.id}
-              style={{
-                background: "rgba(255,255,255,0.6)",
-                border: "0.5px solid #D4C5B0",
-                borderRadius: "16px",
-                padding: "20px 24px",
-                position: "relative",
-              }}
+              className="bg-white/60 border-[0.5px] border-sable rounded-2xl px-6 py-5 relative"
             >
-              <p
-                style={{
-                  fontSize: "11px",
-                  color: "#8B6F52",
-                  fontFamily: "'Cormorant Garamond', serif",
-                  marginBottom: "10px",
-                }}
-              >
+              <p className="text-[11px] text-terre font-cormorant mb-2.5">
                 {new Date(entry.created_at).toLocaleDateString("fr-FR", {
                   weekday: "long",
                   year: "numeric",
@@ -161,30 +63,13 @@ const MesBulles = () => {
                 })}
               </p>
 
-              <p
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "17px",
-                  color: "#2C2016",
-                  lineHeight: 1.8,
-                  whiteSpace: "pre-wrap",
-                }}
-              >
+              <p className="font-cormorant text-[17px] text-encre leading-[1.8] whitespace-pre-wrap">
                 {entry.content}
               </p>
 
               <button
                 onClick={() => handleDelete(entry.id)}
-                style={{
-                  position: "absolute",
-                  top: "16px",
-                  right: "16px",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "#D4C5B0",
-                  fontSize: "16px",
-                }}
+                className="absolute top-4 right-4 bg-transparent border-0 cursor-pointer text-sable text-base"
               >
                 ✕
               </button>

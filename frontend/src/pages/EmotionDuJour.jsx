@@ -1,5 +1,6 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import Header from "../components/Header";
 
 const emotions = [
   {
@@ -44,122 +45,37 @@ const EmotionDuJour = () => {
       navigate("/citations");
     } catch (err) {
       console.error("ERREUR MOOD :", err.response?.data || err.message);
-      // On navigue quand même vers citations
       localStorage.setItem("moodDuJour", emotion.value);
       navigate("/citations");
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-            textDecoration: "none",
-          }}
-        >
-          ZenBulle
-        </Link>
-        <Link
-          to="/dashboard"
-          style={{
-            fontSize: "13px",
-            color: "#8B6F52",
-            border: "0.5px solid #D4C5B0",
-            borderRadius: "20px",
-            padding: "6px 16px",
-            textDecoration: "none",
-          }}
-        >
-          retour
-        </Link>
-      </header>
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header retour="/dashboard" />
 
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 32px",
-          gap: "40px",
-          textAlign: "center",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-          }}
-        >
+      <main className="flex-1 flex flex-col justify-center items-center px-8 gap-10 text-center">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
           aujourd'hui
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "40px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-          }}
-        >
+        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15]">
           comment tu te sens ?
         </h1>
 
-        <div
-          style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
-        />
+        <div className="w-8 h-[0.5px] bg-sable" />
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "12px",
-            width: "100%",
-            maxWidth: "320px",
-          }}
-        >
+        <div className="flex flex-col gap-3 w-full max-w-xs">
           {emotions.map((emotion) => (
             <button
               key={emotion.value}
               onClick={() => handleEmotion(emotion)}
               style={{
-                padding: "18px 32px",
                 background: emotion.bg,
                 border: `0.5px solid ${emotion.couleur}`,
-                borderRadius: "40px",
-                cursor: "pointer",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontStyle: "italic",
-                fontSize: "22px",
                 color: emotion.couleur,
-                letterSpacing: "0.04em",
-                transition: "all 0.2s",
               }}
+              className="px-8 py-[18px] rounded-[40px] cursor-pointer font-cormorant italic text-[22px] tracking-[0.04em] transition-all"
               onMouseEnter={(e) =>
                 (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
               }

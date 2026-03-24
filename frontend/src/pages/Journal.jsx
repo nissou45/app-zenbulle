@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../services/api";
+import Header from "../components/Header";
 
 const Journal = () => {
-  const navigate = useNavigate();
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
 
@@ -24,148 +24,38 @@ const Journal = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-            textDecoration: "none",
-          }}
-        >
-          ZenBulle
-        </Link>
-        <Link
-          to="/dashboard"
-          style={{
-            fontSize: "13px",
-            color: "#8B6F52",
-            border: "0.5px solid #D4C5B0",
-            borderRadius: "20px",
-            padding: "6px 16px",
-            textDecoration: "none",
-          }}
-        >
-          retour
-        </Link>
-      </header>
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header retour="/dashboard" />
 
-      {/* Contenu */}
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 32px",
-          gap: "32px",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-          }}
-        >
+      <main className="flex-1 flex flex-col justify-center items-center px-8 gap-8">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
           ce soir
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "40px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-            textAlign: "center",
-          }}
-        >
+        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15] text-center">
           journal du soir
         </h1>
 
-        <div
-          style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
-        />
+        <div className="w-8 h-[0.5px] bg-sable" />
 
-        {/* Formulaire */}
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            width: "100%",
-            maxWidth: "480px",
-          }}
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-[480px]">
           <textarea
             placeholder="écris ta pensée du soir..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={8}
-            style={{
-              padding: "20px 24px",
-              borderRadius: "20px",
-              border: "1px solid #D4C5B0",
-              background: "rgba(255,255,255,0.6)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "17px",
-              color: "#2C2016",
-              outline: "none",
-              resize: "none",
-              lineHeight: 1.8,
-            }}
+            className="px-6 py-5 rounded-[20px] border border-sable bg-white/60 font-cormorant text-[17px] text-encre outline-none resize-none leading-[1.8]"
           />
 
           {message && (
-            <p
-              style={{
-                color: "#8B6F52",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontStyle: "italic",
-                fontSize: "15px",
-                textAlign: "center",
-              }}
-            >
+            <p className="text-terre font-cormorant italic text-[15px] text-center">
               {message}
             </p>
           )}
 
           <button
             type="submit"
-            style={{
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              cursor: "pointer",
-            }}
+            className="px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] cursor-pointer"
           >
             envoyer ma bulle →
           </button>
@@ -173,15 +63,7 @@ const Journal = () => {
 
         <Link
           to="/mes-bulles"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            color: "#8B6F52",
-            fontSize: "14px",
-            textDecoration: "none",
-            borderBottom: "0.5px solid #8B6F52",
-            paddingBottom: "2px",
-          }}
+          className="font-cormorant italic text-terre text-sm no-underline border-b border-terre pb-0.5"
         >
           voir mes bulles précédentes
         </Link>
