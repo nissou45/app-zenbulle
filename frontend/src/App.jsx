@@ -14,7 +14,7 @@ import Respiration from "./pages/Respiration";
 import EmotionDuJour from "./pages/EmotionDuJour";
 import Citations from "./pages/Citations";
 import Menu from "./pages/Menu";
-
+import Questionnaire from "./pages/Questionnaire";
 const App = () => {
   return (
     <Routes>
@@ -22,6 +22,7 @@ const App = () => {
       <Route path="/" element={<Accueil />} />
       <Route path="/connexion" element={<Connexion />} />
       <Route path="/inscription" element={<Inscription />} />
+      <Route path="/questionnaire" element={<Questionnaire />} />
 
       {/* Pages protégées */}
       <Route
