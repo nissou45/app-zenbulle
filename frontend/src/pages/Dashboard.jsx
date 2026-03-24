@@ -1,5 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Header from "../components/Header";
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -11,167 +12,45 @@ const Dashboard = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5F0EA",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "24px 32px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Caveat Brush', cursive",
-            fontSize: "22px",
-            color: "#2C2016",
-          }}
-        >
-          ZenBulle
-        </span>
-        <Link
-          to="/menu"
-          style={{
-            fontSize: "13px",
-            color: "#8B6F52",
-            border: "0.5px solid #D4C5B0",
-            borderRadius: "20px",
-            padding: "6px 16px",
-            textDecoration: "none",
-          }}
-        >
-          menu
-        </Link>
-      </header>
+    <div className="min-h-screen bg-ivoire flex flex-col">
+      <Header retour="/menu" />
 
-      {/* Contenu */}
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 32px",
-          textAlign: "center",
-          gap: "32px",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.18em",
-            color: "#8B6F52",
-            textTransform: "uppercase",
-            fontFamily: "'Cormorant Garamond', serif",
-          }}
-        >
+      <main className="flex-1 flex flex-col justify-center items-center px-8 text-center gap-8">
+        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
           bonjour
         </p>
 
-        <h1
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "48px",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "#2C2016",
-            lineHeight: 1.15,
-          }}
-        >
+        <h1 className="font-cormorant text-5xl font-light italic text-encre leading-[1.15]">
           {user?.pseudo} 🫧
         </h1>
 
-        <div
-          style={{ width: "32px", height: "0.5px", background: "#D4C5B0" }}
-        />
+        <div className="w-8 h-[0.5px] bg-sable" />
 
-        {/* Actions */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            width: "100%",
-            maxWidth: "320px",
-          }}
-        >
+        <div className="flex flex-col gap-4 w-full max-w-xs">
           <Link
             to="/respiration"
-            style={{
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
+            className="px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] no-underline text-center"
           >
             respirer
           </Link>
 
           <Link
             to="/emotion"
-            style={{
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
+            className="px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] no-underline text-center"
           >
             émotion du jour
           </Link>
 
           <Link
             to="/journal"
-            style={{
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
+            className="px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] no-underline text-center"
           >
             journal du soir
           </Link>
 
           <Link
             to="/mes-bulles"
-            style={{
-              padding: "14px 40px",
-              background: "transparent",
-              color: "#2C2016",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontSize: "18px",
-              border: "1px solid #2C2016",
-              borderRadius: "40px",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
+            className="px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] no-underline text-center"
           >
             mes bulles
           </Link>
@@ -179,17 +58,7 @@ const Dashboard = () => {
 
         <button
           onClick={handleLogout}
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            color: "#8B6F52",
-            fontSize: "14px",
-            background: "transparent",
-            border: "none",
-            borderBottom: "0.5px solid #8B6F52",
-            cursor: "pointer",
-            paddingBottom: "2px",
-          }}
+          className="font-cormorant italic text-terre text-sm bg-transparent border-0 border-b border-terre cursor-pointer pb-0.5"
         >
           se déconnecter
         </button>
