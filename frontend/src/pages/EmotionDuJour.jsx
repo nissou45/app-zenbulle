@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import Header from "../components/Header";
@@ -37,16 +38,15 @@ const emotions = [
 
 const EmotionDuJour = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleEmotion = async (emotion) => {
     try {
       await api.post("/moods", { mood: emotion.value });
       localStorage.setItem("moodDuJour", emotion.value);
       navigate("/citations");
-    } catch (err) {
-      console.error("ERREUR MOOD :", err.response?.data || err.message);
-      localStorage.setItem("moodDuJour", emotion.value);
-      navigate("/citations");
+    } catch {
+      setError("une erreur est survenue, réessaie");
     }
   };
 
@@ -64,6 +64,10 @@ const EmotionDuJour = () => {
         </h1>
 
         <div className="w-8 h-[0.5px] bg-sable" />
+
+        {error && (
+          <p className="font-cormorant italic text-[15px] text-terre">{error}</p>
+        )}
 
         <div className="flex flex-col gap-3 w-full max-w-xs">
           {emotions.map((emotion) => (

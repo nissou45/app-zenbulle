@@ -5,12 +5,13 @@ import Header from "../components/Header";
 const MesBulles = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     api
       .get("/journal")
       .then((res) => setEntries(res.data))
-      .catch((err) => console.error(err))
+      .catch(() => setError("impossible de charger tes bulles"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -18,8 +19,8 @@ const MesBulles = () => {
     try {
       await api.delete(`/journal/${id}`);
       setEntries(entries.filter((e) => e.id !== id));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("impossible de supprimer cette bulle");
     }
   };
 
@@ -39,6 +40,12 @@ const MesBulles = () => {
         {loading && (
           <p className="text-center font-cormorant italic text-terre">
             chargement...
+          </p>
+        )}
+
+        {error && (
+          <p className="text-center font-cormorant italic text-terre">
+            {error}
           </p>
         )}
 

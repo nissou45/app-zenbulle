@@ -46,7 +46,7 @@ const Questionnaire = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("zenbulle_prefs", JSON.stringify(reponses));
-    navigate("//dashboard");
+    navigate("/dashboard");
   };
 
   return (

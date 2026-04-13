@@ -30,8 +30,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await api.get("/logout");
-    setUser(null);
+    try {
+      await api.get("/logout");
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
