@@ -4,13 +4,15 @@ require("./config/db");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+const helmet = require("helmet");
 
 const app = express();
 
 // Middlewares
+app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
     credentials: true,
   }),
 );
@@ -23,6 +25,11 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    },
   }),
 );
 
