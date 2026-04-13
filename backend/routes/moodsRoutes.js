@@ -9,7 +9,7 @@ router.post("/moods", auth, (req, res) => {
   const { mood } = req.body;
 
   db.query("SELECT id FROM moods WHERE label = ?", [mood], (err, rows) => {
-    if (err) return res.status(500).json(err);
+    if (err) return res.status(500).json({ message: "Erreur serveur" });
     if (!rows.length)
       return res.status(404).json({ message: "Humeur introuvable" });
 
@@ -18,7 +18,7 @@ router.post("/moods", auth, (req, res) => {
       "INSERT INTO daily_moods (utilisateur_id, mood_id, date) VALUES (?, ?, NOW())",
       [userId, moodId],
       (err) => {
-        if (err) return res.status(500).json(err);
+        if (err) return res.status(500).json({ message: "Erreur serveur" });
         res.json({ ok: true });
       },
     );
@@ -36,7 +36,7 @@ router.get("/moods", auth, (req, res) => {
      ORDER BY dm.date DESC`,
     [userId],
     (err, rows) => {
-      if (err) return res.status(500).json(err);
+      if (err) return res.status(500).json({ message: "Erreur serveur" });
       res.json(rows);
     },
   );

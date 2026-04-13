@@ -9,11 +9,13 @@ exports.register = (req, res) => {
   }
 
   userModel.findByEmail(email, (err, results) => {
+    if (err) return res.status(500).json({ message: "Erreur serveur" });
     if (results && results.length > 0) {
       return res.status(409).json({ message: "Utilisateur déjà existant" });
     }
 
     bcrypt.hash(password, 10, (err, hash) => {
+      if (err) return res.status(500).json({ message: "Erreur serveur" });
       userModel.create(
         { email, password_hash: hash, pseudo },
         (err, userId) => {
@@ -44,6 +46,7 @@ exports.login = (req, res) => {
 
     const user = results[0];
     bcrypt.compare(password, user.password_hash.trim(), (err, match) => {
+      if (err) return res.status(500).json({ message: "Erreur serveur" });
       if (!match) {
         return res.status(401).json({ message: "Mot de passe incorrect" });
       }

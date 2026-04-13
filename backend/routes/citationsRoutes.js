@@ -12,7 +12,7 @@ const getCitationLocale = (mood) => {
   return liste[Math.floor(Math.random() * liste.length)];
 };
 
-router.get("/citations", auth, async (req, res) => {
+router.get("/citations", auth, (req, res) => {
   const { mood } = req.query;
   const citation = getCitationLocale(mood);
   return res.json({ text: citation });
