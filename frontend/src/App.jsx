@@ -10,7 +10,6 @@ import SelectionTheme from "./pages/SelectionTheme";
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription";
 import Questionnaire from "./pages/Questionnaire";
-
 // Pages protégées
 import Dashboard from "./pages/Dashboard";
 import Journal from "./pages/Journal";
@@ -19,12 +18,15 @@ import Respiration from "./pages/Respiration";
 import EmotionDuJour from "./pages/EmotionDuJour";
 import Citations from "./pages/Citations";
 import Menu from "./pages/Menu";
+import Admin from "./pages/Admin";
+import AdminRoute from "./components/AdminRoute";
 
 const App = () => {
   const { isDesktop } = useBreakpoint();
 
   const appContent = (
     <Routes>
+      {/* Pages publiques */}
       <Route path={ROUTES.splash} element={<SplashScreen />} />
       <Route path={ROUTES.selectionTheme} element={<SelectionTheme />} />
       <Route path={ROUTES.accueil} element={<Accueil />} />
@@ -32,6 +34,7 @@ const App = () => {
       <Route path={ROUTES.inscription} element={<Inscription />} />
       <Route path={ROUTES.questionnaire} element={<Questionnaire />} />
 
+      {/* Pages protégées */}
       <Route
         path={ROUTES.dashboard}
         element={
@@ -41,6 +44,14 @@ const App = () => {
         }
       />
       <Route
+        path={ROUTES.admin}
+        element={
+          <AdminRoute>
+            <Admin />
+          </AdminRoute>
+        }
+      />
+
         path={ROUTES.journal}
         element={
           <PrivateRoute>

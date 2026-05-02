@@ -28,7 +28,7 @@ exports.register = async (req, res, next) => {
       pseudo,
     });
 
-    req.session.user = { id: userId, pseudo, email };
+    req.session.user = { id: userId, pseudo, email, role: "user" };
     return res.status(201).json({ message: "Bienvenue dans ZenBulle 🫧" });
   } catch (err) {
     next(err);
@@ -58,6 +58,7 @@ exports.login = async (req, res, next) => {
       id: user.id,
       pseudo: user.pseudo,
       email: user.email,
+      role: user.role,
     };
     return res.json({ message: "Connexion réussie 🫧" });
   } catch (err) {

@@ -23,6 +23,7 @@ router.get("/me", auth, (req, res) => {
     id: req.session.user.id,
     pseudo: req.session.user.pseudo,
     email: req.session.user.email,
+    role: req.session.user.role,
   });
 });
 

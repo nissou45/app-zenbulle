@@ -25,11 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session Store
-const sessionStore = new MySQLStore({
-  clearExpired: true,
-  checkExpirationInterval: 900000,
-  expiration: 86400000,
-}, db);
+const sessionStore = new MySQLStore(
+  {
+    clearExpired: true,
+    checkExpirationInterval: 900000,
+    expiration: 86400000,
+  },
+  db,
+);
 
 // Session
 app.use(
@@ -54,6 +57,7 @@ app.use("/api", require("./routes/journalRoutes"));
 app.use("/api", require("./routes/moodsRoutes"));
 app.use("/api", require("./routes/citationsRoutes"));
 app.use("/api", require("./routes/exercicesRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route introuvable" });
