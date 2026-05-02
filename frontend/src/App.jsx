@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
+import { ROUTES } from "./constants/routes";
 
 // Pages publiques
 import Accueil from "./pages/Accueil";
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription";
+import Questionnaire from "./pages/Questionnaire";
 
 // Pages protégées
 import Dashboard from "./pages/Dashboard";
@@ -14,19 +16,19 @@ import Respiration from "./pages/Respiration";
 import EmotionDuJour from "./pages/EmotionDuJour";
 import Citations from "./pages/Citations";
 import Menu from "./pages/Menu";
-import Questionnaire from "./pages/Questionnaire";
+
 const App = () => {
   return (
     <Routes>
       {/* Pages publiques */}
-      <Route path="/" element={<Accueil />} />
-      <Route path="/connexion" element={<Connexion />} />
-      <Route path="/inscription" element={<Inscription />} />
-      <Route path="/questionnaire" element={<Questionnaire />} />
+      <Route path={ROUTES.accueil} element={<Accueil />} />
+      <Route path={ROUTES.connexion} element={<Connexion />} />
+      <Route path={ROUTES.inscription} element={<Inscription />} />
+      <Route path={ROUTES.questionnaire} element={<Questionnaire />} />
 
       {/* Pages protégées */}
       <Route
-        path="/dashboard"
+        path={ROUTES.dashboard}
         element={
           <PrivateRoute>
             <Dashboard />
@@ -34,7 +36,7 @@ const App = () => {
         }
       />
       <Route
-        path="/journal"
+        path={ROUTES.journal}
         element={
           <PrivateRoute>
             <Journal />
@@ -42,7 +44,7 @@ const App = () => {
         }
       />
       <Route
-        path="/mes-bulles"
+        path={ROUTES.mesBulles}
         element={
           <PrivateRoute>
             <MesBulles />
@@ -50,7 +52,7 @@ const App = () => {
         }
       />
       <Route
-        path="/respiration"
+        path={ROUTES.respiration}
         element={
           <PrivateRoute>
             <Respiration />
@@ -58,7 +60,7 @@ const App = () => {
         }
       />
       <Route
-        path="/emotion"
+        path={ROUTES.emotion}
         element={
           <PrivateRoute>
             <EmotionDuJour />
@@ -66,7 +68,7 @@ const App = () => {
         }
       />
       <Route
-        path="/citations"
+        path={ROUTES.citations}
         element={
           <PrivateRoute>
             <Citations />
@@ -74,7 +76,7 @@ const App = () => {
         }
       />
       <Route
-        path="/menu"
+        path={ROUTES.menu}
         element={
           <PrivateRoute>
             <Menu />

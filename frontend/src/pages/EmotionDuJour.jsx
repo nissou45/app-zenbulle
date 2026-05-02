@@ -1,91 +1,67 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme";
+import { ROUTES } from "../constants/routes";
+import { STORAGE_KEYS } from "../constants/storage";
+import { EMOTIONS } from "../constants/emotions";
 import api from "../services/api";
 import Header from "../components/Header";
-
-const emotions = [
-  {
-    label: "joyeux",
-    value: "joie",
-    couleur: "#D4A853",
-    bg: "rgba(212,168,83,0.08)",
-  },
-  {
-    label: "calme",
-    value: "calme",
-    couleur: "#7BA7BC",
-    bg: "rgba(123,167,188,0.08)",
-  },
-  {
-    label: "triste",
-    value: "triste",
-    couleur: "#8B7BA8",
-    bg: "rgba(139,123,168,0.08)",
-  },
-  {
-    label: "anxieux",
-    value: "anxieux",
-    couleur: "#BC7B7B",
-    bg: "rgba(188,123,123,0.08)",
-  },
-  {
-    label: "fatigué",
-    value: "fatigue",
-    couleur: "#8B9E8B",
-    bg: "rgba(139,158,139,0.08)",
-  },
-];
+import FloatingBubbles from "../components/FloatingBubbles";
 
 const EmotionDuJour = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleEmotion = async (emotion) => {
+    setIsSubmitting(true);
     try {
       await api.post("/moods", { mood: emotion.value });
-      localStorage.setItem("moodDuJour", emotion.value);
-      navigate("/citations");
+      localStorage.setItem(STORAGE_KEYS.mood, emotion.value);
+      navigate(ROUTES.citations);
     } catch {
       setError("une erreur est survenue, réessaie");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-ivoire flex flex-col">
-      <Header retour="/dashboard" />
+    <div 
+      className="min-h-screen flex flex-col relative overflow-hidden font-cormorant" 
+      style={{ background: theme.bg, color: theme.text }}
+    >
+      <FloatingBubbles />
+      <Header retour={ROUTES.dashboard} />
 
-      <main className="flex-1 flex flex-col justify-center items-center px-8 gap-10 text-center">
-        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
+      <main className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-10 text-center">
+        <p className="text-[11px] tracking-[0.18em] uppercase font-medium" style={{ opacity: 0.7 }}>
           aujourd'hui
         </p>
 
-        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15]">
+        <h1 className="text-[40px] font-light italic leading-tight">
           comment tu te sens ?
         </h1>
 
-        <div className="w-8 h-[0.5px] bg-sable" />
+        <div className="w-8 h-[0.5px]" style={{ background: theme.border }} />
 
         {error && (
-          <p className="font-cormorant italic text-[15px] text-terre">{error}</p>
+          <p className="italic text-[15px] text-[#a85100]">{error}</p>
         )}
 
         <div className="flex flex-col gap-3 w-full max-w-xs">
-          {emotions.map((emotion) => (
+          {EMOTIONS.map((emotion) => (
             <button
               key={emotion.value}
               onClick={() => handleEmotion(emotion)}
+              disabled={isSubmitting}
               style={{
-                background: emotion.bg,
-                border: `0.5px solid ${emotion.couleur}`,
-                color: emotion.couleur,
+                background: `rgba(${parseInt(emotion.hex.slice(1,3), 16)}, ${parseInt(emotion.hex.slice(3,5), 16)}, ${parseInt(emotion.hex.slice(5,7), 16)}, 0.08)`,
+                border: `0.5px solid ${emotion.hex}`,
+                color: emotion.hex,
               }}
-              className="px-8 py-[18px] rounded-[40px] cursor-pointer font-cormorant italic text-[22px] tracking-[0.04em] transition-all"
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = emotion.bg)
-              }
+              className={`px-8 py-[18px] rounded-[40px] italic text-[22px] tracking-[0.04em] transition-all font-cormorant ${isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:bg-black/5"}`}
             >
               {emotion.label}
             </button>

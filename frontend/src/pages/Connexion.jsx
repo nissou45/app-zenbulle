@@ -1,78 +1,86 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../hooks/useTheme";
+import { ROUTES } from "../constants/routes";
 import Header from "../components/Header";
+import FloatingBubbles from "../components/FloatingBubbles";
+import ThemedButton from "../components/ThemedButton";
+import ThemedInput from "../components/ThemedInput";
 
 const Connexion = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [erreur, setErreur] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErreur("");
+    setIsSubmitting(true);
     try {
       await login(email, password);
-      navigate("/dashboard");
+      navigate(ROUTES.dashboard);
     } catch (err) {
-      setErreur("Email ou mot de passe incorrect");
+      setErreur(err.message || "Email ou mot de passe incorrect");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-ivoire flex flex-col">
+    <div 
+      className="min-h-screen flex flex-col relative overflow-hidden font-cormorant" 
+      style={{ background: theme.bg, color: theme.text }}
+    >
+      <FloatingBubbles />
       <Header />
 
-      <main className="flex-1 flex flex-col justify-center items-center px-8 gap-8">
-        <p className="text-[11px] tracking-[0.18em] text-terre uppercase font-cormorant">
+      <main className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-8">
+        <p className="text-[11px] tracking-[0.18em] uppercase font-medium" style={{ opacity: 0.7 }}>
           bon retour
         </p>
 
-        <h1 className="font-cormorant text-[40px] font-light italic text-encre leading-[1.15] text-center">
+        <h1 className="text-[40px] font-light italic leading-tight text-center">
           ta bulle t'attend
         </h1>
 
-        <div className="w-8 h-[0.5px] bg-sable" />
+        <div className="w-8 h-[0.5px]" style={{ background: theme.border }} />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-[360px]">
-          <input
+          <ThemedInput
             type="email"
             placeholder="ton email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
+            required
           />
 
-          <input
+          <ThemedInput
             type="password"
             placeholder="ton mot de passe"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="px-5 py-3.5 rounded-[40px] border border-sable bg-white/60 font-cormorant text-base text-encre outline-none"
+            required
           />
 
           {erreur && (
-            <p className="text-[#a85100] font-cormorant text-sm text-center">
+            <p className="text-[#a85100] text-sm text-center italic">
               {erreur}
             </p>
           )}
 
-          <button
-            type="submit"
-            className="mt-2 px-10 py-3.5 bg-transparent text-encre font-cormorant italic text-lg border border-encre rounded-[40px] cursor-pointer"
-          >
-            entrer dans ma bulle →
-          </button>
+          <ThemedButton type="submit" disabled={isSubmitting} variant="primary" className="mt-2">
+            {isSubmitting ? "Connexion..." : "entrer dans ma bulle →"}
+          </ThemedButton>
         </form>
 
-        <Link
-          to="/inscription"
-          className="font-cormorant italic text-terre text-sm no-underline border-b border-terre pb-0.5"
-        >
+        <ThemedButton variant="ghost" onClick={() => navigate(ROUTES.inscription)}>
           pas encore de bulle ? créer un compte
-        </Link>
+        </ThemedButton>
       </main>
     </div>
   );
