@@ -3,7 +3,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import { ROUTES } from "./constants/routes";
 
 // Pages publiques
+import SplashScreen from "./pages/SplashScreen";
 import Accueil from "./pages/Accueil";
+import SelectionTheme from "./pages/SelectionTheme";
 import Connexion from "./pages/Connexion";
 import Inscription from "./pages/Inscription";
 import Questionnaire from "./pages/Questionnaire";
@@ -21,6 +23,8 @@ const App = () => {
   return (
     <Routes>
       {/* Pages publiques */}
+      <Route path={ROUTES.splash} element={<SplashScreen />} />
+      <Route path={ROUTES.selectionTheme} element={<SelectionTheme />} />
       <Route path={ROUTES.accueil} element={<Accueil />} />
       <Route path={ROUTES.connexion} element={<Connexion />} />
       <Route path={ROUTES.inscription} element={<Inscription />} />

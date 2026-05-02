@@ -13,6 +13,8 @@ export const THEMES = {
     bubbleColor: 'rgba(192,176,216,0.13)',
     bubbleBorder: 'rgba(192,176,216,0.31)',
     greet: (name) => `hey ${name} 🫧`,
+    glass: 'rgba(255,255,255,0.80)',
+    label: 'ton espace'
   },
   adulte: {
     key: 'adulte', name: 'Ancre', age: '26 – 45 ans',
@@ -26,6 +28,8 @@ export const THEMES = {
     bubbleColor: 'rgba(127,175,133,0.13)',
     bubbleBorder: 'rgba(127,175,133,0.31)',
     greet: (name) => `bonjour, ${name}`,
+    glass: 'rgba(255,255,255,0.80)',
+    label: 'ton espace intérieur'
   },
   senior: {
     key: 'senior', name: 'Lumière', age: '46 ans et plus',
@@ -39,6 +43,8 @@ export const THEMES = {
     bubbleColor: 'rgba(90,150,190,0.13)',
     bubbleBorder: 'rgba(90,150,190,0.31)',
     greet: (name) => `bonjour, ${name}`,
+    glass: 'rgba(255,255,255,0.88)',
+    label: 'votre espace intérieur'
   },
 };
 
