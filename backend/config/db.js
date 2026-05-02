@@ -11,15 +11,18 @@ const db = mysql.createPool({
   queueLimit: 100,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 db.getConnection()
   .then((conn) => {
-    console.log("✅ MySQL connecté");
+    console.log("✅ MySQL Aiven connecté");
     conn.release();
   })
   .catch((err) => {
-    console.error("❌ MySQL :", err.message);
+    console.error("❌ MySQL non connecté :", err.message);
     process.exit(1);
   });
 

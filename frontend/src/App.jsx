@@ -52,6 +52,7 @@ const App = () => {
         }
       />
 
+      <Route
         path={ROUTES.journal}
         element={
           <PrivateRoute>
@@ -104,21 +105,25 @@ const App = () => {
 
   if (isDesktop) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        background: '#E8E4EF',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-      }}>
-        <div style={{
-          width: '100%',
-          maxWidth: 480,
-          minHeight: '100vh',
-          background: 'white',
-          position: 'relative',
-          boxShadow: '0 0 60px rgba(0,0,0,0.12)',
-        }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#E8E4EF",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 480,
+            minHeight: "100vh",
+            background: "white",
+            position: "relative",
+            boxShadow: "0 0 60px rgba(0,0,0,0.12)",
+          }}
+        >
           {appContent}
         </div>
       </div>
