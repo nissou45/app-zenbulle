@@ -16,13 +16,21 @@ router.post("/login", authLimiter, authController.login);
 
 // Session
 router.get("/me", auth, (req, res) => {
-  res.json({ pseudo: req.session.user.pseudo });
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Non connecté" });
+  }
+  res.json({
+    id: req.session.user.id,
+    pseudo: req.session.user.pseudo,
+    email: req.session.user.email,
+  });
 });
 
 // Logout
-router.get("/logout", (req, res) => {
+router.post("/logout", (req, res) => {
   req.session.destroy((err) => {
-    if (err) return res.status(500).json({ message: "Erreur lors de la déconnexion" });
+    if (err)
+      return res.status(500).json({ message: "Erreur lors de la déconnexion" });
     res.json({ ok: true });
   });
 });

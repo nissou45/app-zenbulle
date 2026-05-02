@@ -1,62 +1,66 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/userModel");
 
-exports.register = (req, res) => {
-  const { email, password, pseudo } = req.body;
+exports.register = async (req, res, next) => {
+  try {
+    const { email, password, pseudo } = req.body;
 
-  if (!email || !password || !pseudo) {
-    return res.status(400).json({ message: "Champs manquants" });
-  }
-
-  userModel.findByEmail(email, (err, results) => {
-    if (err) return res.status(500).json({ message: "Erreur serveur" });
-    if (results && results.length > 0) {
-      return res.status(409).json({ message: "Utilisateur déjà existant" });
+    if (!email || !password || !pseudo) {
+      return res.status(400).json({ message: "Champs manquants" });
     }
 
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) return res.status(500).json({ message: "Erreur serveur" });
-      userModel.create(
-        { email, password_hash: hash, pseudo },
-        (err, userId) => {
-          if (err) return res.status(500).json({ message: "Erreur serveur" });
+    // Vérifier si l'email existe déjà
+    const existingEmail = await userModel.findByEmail(email);
+    if (existingEmail.length > 0) {
+      return res.status(409).json({ message: "Cet email est déjà utilisé" });
+    }
 
-          req.session.user = { id: userId, pseudo, email };
-          return res
-            .status(201)
-            .json({ message: "Bienvenue dans ZenBulle 🫧" });
-        },
-      );
+    // Vérifier si le pseudo existe déjà
+    const existingPseudo = await userModel.findByPseudo(pseudo);
+    if (existingPseudo.length > 0) {
+      return res.status(409).json({ message: "Ce pseudo est déjà pris" });
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+    const userId = await userModel.create({
+      email,
+      password_hash: hash,
+      pseudo,
     });
-  });
+
+    req.session.user = { id: userId, pseudo, email };
+    return res.status(201).json({ message: "Bienvenue dans ZenBulle 🫧" });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.login = (req, res) => {
-  const { email, password } = req.body;
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ message: "Champs manquants" });
-  }
+    if (!email || !password) {
+      return res.status(400).json({ message: "Champs manquants" });
+    }
 
-  userModel.findByEmail(email, (err, results) => {
-    if (err) return res.status(500).json({ message: "Erreur serveur" });
-    if (!results || results.length === 0) {
-      return res.status(401).json({ message: "Utilisateur introuvable" });
+    const results = await userModel.findByEmail(email);
+    if (results.length === 0) {
+      return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
     const user = results[0];
-    bcrypt.compare(password, user.password_hash.trim(), (err, match) => {
-      if (err) return res.status(500).json({ message: "Erreur serveur" });
-      if (!match) {
-        return res.status(401).json({ message: "Mot de passe incorrect" });
-      }
+    const match = await bcrypt.compare(password, user.password_hash);
+    if (!match) {
+      return res.status(401).json({ message: "Identifiants incorrects" });
+    }
 
-      req.session.user = {
-        id: user.id,
-        pseudo: user.pseudo,
-        email: user.email,
-      };
-      return res.json({ message: "Connexion réussie 🫧" });
-    });
-  });
+    req.session.user = {
+      id: user.id,
+      pseudo: user.pseudo,
+      email: user.email,
+    };
+    return res.json({ message: "Connexion réussie 🫧" });
+  } catch (err) {
+    next(err);
+  }
 };

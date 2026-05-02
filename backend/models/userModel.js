@@ -1,19 +1,24 @@
 const db = require("../config/db");
 
-exports.findByEmail = (email, callback) => {
+exports.findByEmail = async (email) => {
   const sql = "SELECT * FROM utilisateurs WHERE email = ?";
-  db.query(sql, [email], callback);
+  const [rows] = await db.query(sql, [email]);
+  return rows;
 };
 
-exports.create = (user, callback) => {
+exports.findByPseudo = async (pseudo) => {
+  const sql = "SELECT * FROM utilisateurs WHERE pseudo = ?";
+  const [rows] = await db.query(sql, [pseudo]);
+  return rows;
+};
+
+exports.create = async (user) => {
   const sql =
     "INSERT INTO utilisateurs (email, password_hash, pseudo) VALUES (?, ?, ?)";
-  db.query(
-    sql,
-    [user.email, user.password_hash, user.pseudo],
-    (err, result) => {
-      if (err) return callback(err);
-      callback(null, result.insertId);
-    },
-  );
+  const [result] = await db.query(sql, [
+    user.email,
+    user.password_hash,
+    user.pseudo,
+  ]);
+  return result.insertId;
 };
