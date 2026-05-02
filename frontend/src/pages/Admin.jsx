@@ -5,6 +5,46 @@ import Header from "../components/Header";
 import FloatingBubbles from "../components/FloatingBubbles";
 import { MOOD_COLORS } from "../constants/emotions";
 
+const CitationsForm = ({ theme, onAdd }) => {
+  const [mood, setMood] = useState('joie');
+  const [text, setText] = useState('');
+  const submit = async () => {
+    if (!text.trim()) return;
+    await api.post('/admin/citations', { mood, text });
+    setText('');
+    onAdd();
+  };
+  return (
+    <div style={{ padding:20, borderRadius:16,
+      border:`1px solid ${theme.border}`, marginBottom:20 }}>
+      <select value={mood} onChange={e => setMood(e.target.value)}
+        style={{ fontFamily:"'Cormorant Garamond',serif",
+          fontSize:16, border:`1px solid ${theme.border}`,
+          borderRadius:20, padding:'6px 12px', marginBottom:12,
+          color:theme.text, background:'transparent' }}>
+        {['joie','calme','triste','anxieux','fatigue'].map(m => (
+          <option key={m} value={m}>{m}</option>
+        ))}
+      </select>
+      <textarea value={text} onChange={e => setText(e.target.value)}
+        placeholder="Nouvelle citation..."
+        style={{ width:'100%', padding:12, borderRadius:12,
+          border:`1px solid ${theme.border}`,
+          fontFamily:"'Cormorant Garamond',serif",
+          fontSize:16, resize:'none', outline:'none',
+          background:'rgba(255,255,255,0.6)', color:theme.text,
+          marginBottom:12 }} rows={3}/>
+      <button onClick={submit} style={{
+        padding:'10px 24px', background:theme.btnFill,
+        color:'white', border:'none', borderRadius:30,
+        fontFamily:"'Cormorant Garamond',serif",
+        fontStyle:'italic', fontSize:16, cursor:'pointer' }}>
+        Ajouter →
+      </button>
+    </div>
+  );
+};
+
 const Admin = () => {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState("stats");
@@ -54,13 +94,30 @@ const Admin = () => {
         </div>
 
         {activeTab === "stats" && data.stats && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {Object.entries(data.stats.moodStats).map(([mood, count]) => (
-              <div key={mood} className="p-4 rounded-xl border" style={{ borderColor: theme.border }}>
-                <h3 className="italic text-xl capitalize" style={{ color: MOOD_COLORS[mood] }}>{mood}</h3>
-                <p className="text-3xl">{count}</p>
+          <div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, marginBottom:24 }}>
+              <div style={{ padding:20, borderRadius:16, border:`1px solid ${theme.border}`, textAlign:'center' }}>
+                <p style={{ fontSize:11, letterSpacing:'0.15em', textTransform:'uppercase', color:theme.muted }}>Utilisateurs</p>
+                <p style={{ fontSize:36, fontStyle:'italic', color:theme.accent }}>{data.stats.totalUsers}</p>
               </div>
-            ))}
+              <div style={{ padding:20, borderRadius:16, border:`1px solid ${theme.border}`, textAlign:'center' }}>
+                <p style={{ fontSize:11, letterSpacing:'0.15em', textTransform:'uppercase', color:theme.muted }}>Humeurs</p>
+                <p style={{ fontSize:36, fontStyle:'italic', color:theme.accent }}>{data.stats.totalMoods}</p>
+              </div>
+              <div style={{ padding:20, borderRadius:16, border:`1px solid ${theme.border}`, textAlign:'center' }}>
+                <p style={{ fontSize:11, letterSpacing:'0.15em', textTransform:'uppercase', color:theme.muted }}>Journaux</p>
+                <p style={{ fontSize:36, fontStyle:'italic', color:theme.accent }}>{data.stats.totalJournals}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {Object.entries(data.stats.moodStats).map(([mood, count]) => (
+                <div key={mood} className="p-4 rounded-xl border" style={{ borderColor: theme.border }}>
+                  <h3 className="italic text-xl capitalize" style={{ color: MOOD_COLORS[mood] }}>{mood}</h3>
+                  <p className="text-3xl">{count}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -85,6 +142,31 @@ const Admin = () => {
               ))}
             </tbody>
           </table>
+        )}
+
+        {activeTab === "citations" && (
+          <div>
+            <CitationsForm theme={theme} onAdd={fetchData} />
+            {data.citations.map((c) => (
+              <div key={c.id} style={{
+                display:'flex', justifyContent:'space-between',
+                alignItems:'center', padding:'12px 16px',
+                borderBottom:`1px solid ${theme.border}`
+              }}>
+                <div>
+                  <span style={{ fontSize:10, color:theme.accent,
+                    textTransform:'uppercase', letterSpacing:'0.15em',
+                    marginRight:12 }}>{c.mood}</span>
+                  <span style={{ fontStyle:'italic', color:theme.text }}>{c.text}</span>
+                </div>
+                <button onClick={async () => {
+                  await api.delete(`/admin/citations/${c.id}`);
+                  fetchData();
+                }} style={{ color:'#C05858', background:'none',
+                  border:'none', cursor:'pointer', fontSize:18 }}>✕</button>
+              </div>
+            ))}
+          </div>
         )}
       </main>
     </div>
