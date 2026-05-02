@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Header from "../components/Header";
 import { useTheme } from "../hooks/useTheme";
 import FloatingBubbles from "../components/FloatingBubbles";
 import ThemedButton from "../components/ThemedButton";
-import ThemedInput from "../components/ThemedInput";
 import { ROUTES } from "../constants/routes";
 import { useBreakpoint } from "../hooks/useBreakpoint";
 
@@ -51,8 +50,28 @@ const Inscription = () => {
     }
   };
 
-  const cardPadding = isDesktop ? '36px 32px' : isTablet ? '32px 28px' : '28px 20px';
-  const inputSize = (isDesktop || isTablet) ? '18px' : '16px';
+  const labelStyle = {
+    fontSize: 10,
+    letterSpacing: '.15em',
+    textTransform: 'uppercase',
+    color: theme.accent,
+    marginBottom: 6,
+    display: 'block',
+    textAlign: 'left'
+  };
+
+  const inputStyle = {
+    border: 'none',
+    borderBottom: '1.5px solid ' + theme.border,
+    borderRadius: 0,
+    background: 'transparent',
+    padding: '11px 0 10px',
+    width: '100%',
+    fontSize: 18,
+    fontFamily: "Cormorant Garamond, serif",
+    color: theme.text,
+    outline: 'none'
+  };
 
   return (
     <div 
@@ -69,74 +88,91 @@ const Inscription = () => {
           margin: (isDesktop || isTablet) ? '0 auto' : '0'
         }}
       >
-        <p className="text-[11px] tracking-[0.18em] uppercase font-medium" style={{ opacity: 0.7 }}>
-          bienvenue
+        <p className="text-[10px] tracking-[0.15em] uppercase font-medium" style={{ opacity: 0.7 }}>
+          BIENVENUE
         </p>
 
-        <h1 className="text-[40px] font-light italic leading-tight text-center">
+        <h1 className="text-[36px] font-light italic leading-tight text-center">
           crée ta bulle
         </h1>
 
         <div className="w-8 h-[0.5px]" style={{ background: theme.border }} />
 
-        <form 
-          onSubmit={handleSubmit} 
-          className="flex flex-col gap-3.5 w-full"
+        {/* GlassCard Form */}
+        <div 
           style={{ 
-            background: 'rgba(255,255,255,0.4)',
-            padding: cardPadding,
+            background: 'rgba(255,255,255,0.75)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             borderRadius: '24px',
-            maxWidth: isDesktop ? '420px' : isTablet ? '400px' : '100%',
-            backdropFilter: 'blur(10px)'
+            padding: '32px 28px',
+            width: '100%',
+            maxWidth: 340,
+            boxShadow: '0 4px 24px rgba(0,0,0,0.06)'
           }}
         >
-          <ThemedInput
-            type="text"
-            placeholder="ton prénom"
-            value={pseudo}
-            onChange={(e) => setPseudo(e.target.value)}
-            required
-            style={{ fontSize: inputSize }}
-          />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+            <div className="flex flex-col items-start">
+              <label style={labelStyle}>prénom</label>
+              <input
+                type="text"
+                placeholder="ton prénom"
+                value={pseudo}
+                onChange={(e) => setPseudo(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          <ThemedInput
-            type="email"
-            placeholder="ton email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ fontSize: inputSize }}
-          />
+            <div className="flex flex-col items-start">
+              <label style={labelStyle}>email</label>
+              <input
+                type="email"
+                placeholder="ton@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          <ThemedInput
-            type="password"
-            placeholder="ton mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ fontSize: inputSize }}
-          />
+            <div className="flex flex-col items-start">
+              <label style={labelStyle}>mot de passe</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          <ThemedInput
-            type="password"
-            placeholder="confirme ton mot de passe"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            required
-            style={{ fontSize: inputSize }}
-          />
+            <div className="flex flex-col items-start">
+              <label style={labelStyle}>confirmer</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          {erreur && (
-            <p className="text-[#a85100] text-sm text-center italic">
-              {erreur}
-            </p>
-          )}
+            {erreur && (
+              <p className="text-[#a85100] text-sm text-center italic">
+                {erreur}
+              </p>
+            )}
 
-          <ThemedButton type="submit" disabled={isSubmitting} variant="primary">
-            {isSubmitting ? "Création..." : "créer mon compte →"}
-          </ThemedButton>
-        </form>
+            <ThemedButton type="submit" disabled={isSubmitting} variant="primary" className="mt-2">
+              {isSubmitting ? "Création..." : "créer mon compte →"}
+            </ThemedButton>
+          </form>
+        </div>
 
+        {/* Lien connexion en dehors de la carte */}
         <ThemedButton variant="ghost" onClick={() => navigate(ROUTES.connexion)}>
           déjà une bulle ? se connecter
         </ThemedButton>
