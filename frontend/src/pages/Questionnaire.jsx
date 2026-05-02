@@ -5,10 +5,12 @@ import { ROUTES } from "../constants/routes";
 import { STORAGE_KEYS } from "../constants/storage";
 import { QUESTIONS } from "../constants/questions";
 import FloatingBubbles from "../components/FloatingBubbles";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const Questionnaire = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { isTablet, isDesktop } = useBreakpoint();
   const [step, setStep] = useState(0);
   const [reponses, setReponses] = useState({});
 
@@ -34,6 +36,9 @@ const Questionnaire = () => {
     }
   };
 
+  const questionFontSize = isDesktop ? '44px' : isTablet ? '40px' : '34px';
+  const optionPadding = isDesktop ? '20px 24px' : isTablet ? '18px 22px' : '16px 18px';
+
   return (
     <div 
       className="min-h-screen flex flex-col relative overflow-hidden font-cormorant" 
@@ -56,14 +61,18 @@ const Questionnaire = () => {
       </header>
 
       <main 
-        key={step} // Force le re-render pour l'animation fadeIn
+        key={step} 
         className="flex-1 flex flex-col items-center justify-center px-8 pb-12 relative z-10 gap-10 animate-fadeIn"
+        style={{
+          maxWidth: isDesktop ? '480px' : isTablet ? '600px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}
       >
         <div className="flex flex-col gap-2 items-center text-center">
           <p className="text-[11px] tracking-[0.25em] uppercase font-medium opacity-70">
             AVANT DE COMMENCER
           </p>
-          <h1 className="text-[40px] font-light italic leading-tight max-w-[600px]">
+          <h1 className="font-light italic leading-tight max-w-[600px]" style={{ fontSize: questionFontSize }}>
             {currentQuestion.question}
           </h1>
         </div>
@@ -77,8 +86,9 @@ const Questionnaire = () => {
               <button
                 key={option}
                 onClick={() => handleOptionClick(option)}
-                className="flex items-center px-6 py-[18px] rounded-[16px] border transition-all hover:-translate-y-0.5 text-left cursor-pointer"
+                className="flex items-center rounded-[16px] border transition-all hover:-translate-y-0.5 text-left cursor-pointer"
                 style={{ 
+                  padding: optionPadding,
                   background: isSelected ? theme.cardGrad : "rgba(255, 255, 255, 0.7)",
                   borderColor: isSelected ? theme.accent : theme.border,
                   boxShadow: isSelected ? `0 4px 15px ${theme.accent}20` : 'none'

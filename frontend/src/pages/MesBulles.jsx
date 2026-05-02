@@ -4,9 +4,11 @@ import { ROUTES } from "../constants/routes";
 import api from "../services/api";
 import Header from "../components/Header";
 import FloatingBubbles from "../components/FloatingBubbles";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const MesBulles = () => {
   const { theme } = useTheme();
+  const { isDesktop, isTablet } = useBreakpoint();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,7 +42,13 @@ const MesBulles = () => {
       <FloatingBubbles />
       <Header retour={ROUTES.dashboard} />
 
-      <main className="flex-1 p-8 max-w-[600px] mx-auto w-full relative z-10">
+      <main 
+        className="flex-1 p-8 relative z-10"
+        style={{
+          maxWidth: isDesktop ? '600px' : isTablet ? '560px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}
+      >
         <p className="text-[11px] tracking-[0.18em] uppercase font-medium text-center mb-4 opacity-70">
           ton voyage intérieur
         </p>

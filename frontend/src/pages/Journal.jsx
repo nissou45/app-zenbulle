@@ -5,9 +5,11 @@ import api from "../services/api";
 import Header from "../components/Header";
 import FloatingBubbles from "../components/FloatingBubbles";
 import ThemedButton from "../components/ThemedButton";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const Journal = () => {
   const { theme } = useTheme();
+  const { isDesktop, isTablet } = useBreakpoint();
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,12 +41,18 @@ const Journal = () => {
       <FloatingBubbles />
       <Header retour={ROUTES.dashboard} />
 
-      <main className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-8">
+      <main 
+        className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-8"
+        style={{
+          maxWidth: isDesktop ? '600px' : isTablet ? '560px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}
+      >
         <p className="text-[11px] tracking-[0.18em] uppercase font-medium opacity-70">
           ce soir
         </p>
 
-        <h1 className="text-[40px] font-light italic leading-[1.15] text-center">
+        <h1 className="text-[40px] font-light italic leading-tight text-center">
           journal du soir
         </h1>
 
@@ -55,7 +63,7 @@ const Journal = () => {
             placeholder="écris ta pensée du soir..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            rows={8}
+            rows={isDesktop ? 10 : 8}
             className="px-6 py-5 rounded-[20px] border bg-white/40 font-cormorant text-[17px] outline-none resize-none leading-[1.8] transition-all focus:bg-white/60"
             style={{ borderColor: theme.border, color: theme.text }}
           />

@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useTheme } from "../hooks/useTheme";
-import { ROUTES } from "../constants/routes";
 import Header from "../components/Header";
+import { useTheme } from "../hooks/useTheme";
 import FloatingBubbles from "../components/FloatingBubbles";
 import ThemedButton from "../components/ThemedButton";
 import ThemedInput from "../components/ThemedInput";
+import { ROUTES } from "../constants/routes";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const Inscription = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
   const { theme } = useTheme();
+  const { isTablet, isDesktop } = useBreakpoint();
   const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,6 +51,9 @@ const Inscription = () => {
     }
   };
 
+  const cardPadding = isDesktop ? '36px 32px' : isTablet ? '32px 28px' : '28px 20px';
+  const inputSize = (isDesktop || isTablet) ? '18px' : '16px';
+
   return (
     <div 
       className="min-h-screen flex flex-col relative overflow-hidden font-cormorant" 
@@ -57,7 +62,13 @@ const Inscription = () => {
       <FloatingBubbles />
       <Header />
 
-      <main className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-8">
+      <main 
+        className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-8"
+        style={{
+          maxWidth: isDesktop ? '480px' : isTablet ? '600px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}
+      >
         <p className="text-[11px] tracking-[0.18em] uppercase font-medium" style={{ opacity: 0.7 }}>
           bienvenue
         </p>
@@ -68,13 +79,24 @@ const Inscription = () => {
 
         <div className="w-8 h-[0.5px]" style={{ background: theme.border }} />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 w-full max-w-[360px]">
+        <form 
+          onSubmit={handleSubmit} 
+          className="flex flex-col gap-3.5 w-full"
+          style={{ 
+            background: 'rgba(255,255,255,0.4)',
+            padding: cardPadding,
+            borderRadius: '24px',
+            maxWidth: isDesktop ? '420px' : isTablet ? '400px' : '100%',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
           <ThemedInput
             type="text"
             placeholder="ton prénom"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
             required
+            style={{ fontSize: inputSize }}
           />
 
           <ThemedInput
@@ -83,6 +105,7 @@ const Inscription = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={{ fontSize: inputSize }}
           />
 
           <ThemedInput
@@ -91,6 +114,7 @@ const Inscription = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ fontSize: inputSize }}
           />
 
           <ThemedInput
@@ -99,6 +123,7 @@ const Inscription = () => {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             required
+            style={{ fontSize: inputSize }}
           />
 
           {erreur && (

@@ -5,9 +5,11 @@ import { PHASES, DUREE_EXERCICE } from "../constants/respiration";
 import Header from "../components/Header";
 import FloatingBubbles from "../components/FloatingBubbles";
 import ThemedButton from "../components/ThemedButton";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const Respiration = () => {
   const { theme } = useTheme();
+  const { isDesktop, isTablet } = useBreakpoint();
   const [phaseIndex, setPhaseIndex] = useState(0);
   const [timer, setTimer] = useState(DUREE_EXERCICE);
   const [actif, setActif] = useState(true);
@@ -46,6 +48,8 @@ const Respiration = () => {
     setActif(true);
   };
 
+  const bubbleSize = isDesktop ? '220px' : isTablet ? '200px' : '160px';
+
   return (
     <div 
       className="min-h-screen flex flex-col relative overflow-hidden font-cormorant" 
@@ -54,8 +58,14 @@ const Respiration = () => {
       <FloatingBubbles />
       <Header retour={ROUTES.dashboard} />
 
-      <main className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-10">
-        <p className="text-[11px] tracking-[0.18em] uppercase font-medium" style={{ opacity: 0.7 }}>
+      <main 
+        className="flex-1 flex flex-col justify-center items-center px-8 relative z-10 gap-10"
+        style={{
+          maxWidth: isDesktop ? '480px' : isTablet ? '600px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}
+      >
+        <p className="text-[11px] tracking-[0.18em] uppercase font-medium style={{ opacity: 0.7 }}">
           prends un moment
         </p>
 
@@ -66,8 +76,10 @@ const Respiration = () => {
         <div className="w-8 h-[0.5px]" style={{ background: theme.border }} />
 
         <div
-          className="w-40 h-40 rounded-full border flex items-center justify-center transition-transform duration-[800ms] ease-in-out bg-white/50"
+          className="rounded-full border flex items-center justify-center transition-transform duration-[800ms] ease-in-out bg-white/50"
           style={{ 
+            width: bubbleSize,
+            height: bubbleSize,
             borderColor: theme.border,
             transform: phaseIndex === 2 ? 'scale(0.9)' : 'scale(1.2)'
           }}

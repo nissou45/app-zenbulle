@@ -4,10 +4,12 @@ import { useTheme } from '../hooks/useTheme';
 import { THEMES } from '../constants/themes';
 import { ROUTES } from '../constants/routes';
 import FloatingBubbles from '../components/FloatingBubbles';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 const SelectionTheme = () => {
   const navigate = useNavigate();
   const { setTheme } = useTheme();
+  const { isTablet, isDesktop } = useBreakpoint();
   const [hov, setHov] = useState(null);
   const [entered, setEntered] = useState(false);
 
@@ -19,6 +21,8 @@ const SelectionTheme = () => {
     setTheme(theme.key);
     navigate(ROUTES.accueil);
   };
+
+  const titleSize = isDesktop ? '44px' : isTablet ? '40px' : '38px';
 
   return (
     <div style={{
@@ -43,9 +47,16 @@ const SelectionTheme = () => {
             fontSize:26, color:'#2A2030' }}>ZenBulle</span>
         </div>
 
-        <main style={{ flex:1, display:'flex',
-          flexDirection:'column', padding:'4px 18px 30px',
-          gap:11, justifyContent:'center' }}>
+        <main style={{ 
+          flex:1, 
+          display:'flex',
+          flexDirection:'column', 
+          padding: isDesktop ? '4px 32px 30px' : isTablet ? '4px 24px 30px' : '4px 18px 30px',
+          gap:11, 
+          justifyContent:'center',
+          maxWidth: isDesktop ? '480px' : isTablet ? '600px' : '100%',
+          margin: (isDesktop || isTablet) ? '0 auto' : '0'
+        }}>
 
           <p style={{
             fontSize:10, letterSpacing:'0.22em',
@@ -58,7 +69,7 @@ const SelectionTheme = () => {
           }}>bienvenue</p>
 
           <h1 style={{
-            fontSize:38, fontWeight:300, fontStyle:'italic',
+            fontSize: titleSize, fontWeight:300, fontStyle:'italic',
             color:'#2A1838', lineHeight:1.15, marginBottom:14,
             textAlign:'center',
             opacity: entered?1:0,

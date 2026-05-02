@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import { ROUTES } from "./constants/routes";
+import { useBreakpoint } from "./hooks/useBreakpoint";
 
 // Pages publiques
 import SplashScreen from "./pages/SplashScreen";
@@ -20,9 +21,10 @@ import Citations from "./pages/Citations";
 import Menu from "./pages/Menu";
 
 const App = () => {
-  return (
+  const { isDesktop } = useBreakpoint();
+
+  const appContent = (
     <Routes>
-      {/* Pages publiques */}
       <Route path={ROUTES.splash} element={<SplashScreen />} />
       <Route path={ROUTES.selectionTheme} element={<SelectionTheme />} />
       <Route path={ROUTES.accueil} element={<Accueil />} />
@@ -30,7 +32,6 @@ const App = () => {
       <Route path={ROUTES.inscription} element={<Inscription />} />
       <Route path={ROUTES.questionnaire} element={<Questionnaire />} />
 
-      {/* Pages protégées */}
       <Route
         path={ROUTES.dashboard}
         element={
@@ -89,6 +90,31 @@ const App = () => {
       />
     </Routes>
   );
+
+  if (isDesktop) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#E8E4EF',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+      }}>
+        <div style={{
+          width: '100%',
+          maxWidth: 480,
+          minHeight: '100vh',
+          background: 'white',
+          position: 'relative',
+          boxShadow: '0 0 60px rgba(0,0,0,0.12)',
+        }}>
+          {appContent}
+        </div>
+      </div>
+    );
+  }
+
+  return appContent;
 };
 
 export default App;

@@ -6,6 +6,7 @@ import { ROUTES } from '../constants/routes';
 import { MOOD_COLORS } from '../constants/emotions';
 import FloatingBubbles from '../components/FloatingBubbles';
 import api from '../services/api';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 const DAY_LABELS = ['D','L','M','M','J','V','S'];
 
@@ -71,6 +72,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { theme: t } = useTheme();
   const { user, logout } = useAuth();
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
   const [moods, setMoods] = useState([]);
   const [showChart, setShowChart] = useState(false);
 
@@ -116,6 +118,11 @@ const Dashboard = () => {
     navigate(ROUTES.accueil);
   };
 
+  const heroPadding = isDesktop ? '24px 28px' : isTablet ? '20px 24px' : '16px 18px 14px';
+  const gridGap = isDesktop ? '16px' : isTablet ? '14px' : '10px';
+  const tilePadding = isDesktop ? '22px 18px' : isTablet ? '20px 16px' : '17px 13px';
+  const tileLabelSize = isDesktop ? '17px' : isTablet ? '16px' : '14px';
+
   return (
     <div style={{
       minHeight:'100vh',
@@ -140,9 +147,11 @@ const Dashboard = () => {
 
       {/* Contenu */}
       <main style={{
-        flex:1, padding:'0 20px 24px',
+        flex:1, padding: isDesktop ? '0 32px 24px' : isTablet ? '0 24px 24px' : '0 20px 24px',
         display:'flex', flexDirection:'column',
-        position:'relative', zIndex:1, gap:14
+        position:'relative', zIndex:1, gap:14,
+        maxWidth: isDesktop ? '480px' : isTablet ? '600px' : '100%',
+        margin: (isDesktop || isTablet) ? '0 auto' : '0'
       }}>
 
         {/* Carte hero */}
@@ -153,7 +162,7 @@ const Dashboard = () => {
           borderRadius:24,
           border:'1px solid rgba(255,255,255,0.85)',
           boxShadow:`0 4px 28px rgba(0,0,0,0.06)`,
-          padding:'16px 18px 14px',
+          padding: heroPadding,
         }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
             <div style={{ flex:1 }}>
@@ -221,7 +230,7 @@ const Dashboard = () => {
         </div>
 
         {/* Grille 2x2 */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap: gridGap }}>
           {cards.map(c=>(
             <button key={c.route} onClick={()=>navigate(c.route)}
               style={{
@@ -229,7 +238,7 @@ const Dashboard = () => {
                 backdropFilter:'blur(12px)',
                 border:`1px solid ${c.border}`,
                 borderRadius:20,
-                padding:'17px 13px',
+                padding: tilePadding,
                 cursor:'pointer',
                 textAlign:'left',
                 transition:'transform .18s, box-shadow .18s',
@@ -243,7 +252,7 @@ const Dashboard = () => {
               }}>
               <div style={{ fontSize:21, marginBottom:7 }}>{c.icon}</div>
               <div style={{ fontFamily:"'Cormorant Garamond',serif",
-                fontStyle:'italic', fontSize:14, color:t.text,
+                fontStyle:'italic', fontSize: tileLabelSize, color:t.text,
                 marginBottom:3 }}>{c.label}</div>
               <div style={{ fontSize:10, color:t.muted }}>{c.sub}</div>
             </button>

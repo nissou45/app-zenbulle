@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import api from "../services/api";
 import { useTheme } from "../hooks/useTheme";
 
@@ -34,7 +34,8 @@ export const AuthProvider = ({ children }) => {
       const me = await api.get("/me");
       setUser(me.data);
     } catch (err) {
-      const message = err.response?.data?.message || "Erreur lors de l'inscription";
+      const message =
+        err.response?.data?.message || "Erreur lors de l'inscription";
       throw new Error(message);
     }
   };
@@ -48,8 +49,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, theme, setTheme }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, logout, theme, setTheme }}
+    >
       {children}
     </AuthContext.Provider>
   );
+};
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  return context;
 };
