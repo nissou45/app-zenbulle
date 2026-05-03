@@ -24,7 +24,7 @@ app.use(
   }),
 );
 app.options(
-  "*",
+  "(.*)",
   cors({
     origin: ["https://app-zenbulle.vercel.app", "http://localhost:5173"],
     credentials: true,
