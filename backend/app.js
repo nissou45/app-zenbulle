@@ -23,13 +23,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
-app.options(
-  "(.*)",
-  cors({
-    origin: ["https://app-zenbulle.vercel.app", "http://localhost:5173"],
-    credentials: true,
-  }),
-);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
