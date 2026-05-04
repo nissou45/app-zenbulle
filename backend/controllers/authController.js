@@ -9,13 +9,11 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({ message: "Champs manquants" });
     }
 
-    // Vérifier si l'email existe déjà
     const existingEmail = await userModel.findByEmail(email);
     if (existingEmail.length > 0) {
       return res.status(409).json({ message: "Cet email est déjà utilisé" });
     }
 
-    // Vérifier si le pseudo existe déjà
     const existingPseudo = await userModel.findByPseudo(pseudo);
     if (existingPseudo.length > 0) {
       return res.status(409).json({ message: "Ce pseudo est déjà pris" });
@@ -29,7 +27,10 @@ exports.register = async (req, res, next) => {
     });
 
     req.session.user = { id: userId, pseudo, email, role: "user" };
-    return res.status(201).json({ message: "Bienvenue dans ZenBulle 🫧" });
+    req.session.save((err) => {
+      if (err) return next(err);
+      return res.status(201).json({ message: "Bienvenue dans ZenBulle 🫧" });
+    });
   } catch (err) {
     next(err);
   }
@@ -60,7 +61,10 @@ exports.login = async (req, res, next) => {
       email: user.email,
       role: user.role,
     };
-    return res.json({ message: "Connexion réussie 🫧" });
+    req.session.save((err) => {
+      if (err) return next(err);
+      return res.json({ message: "Connexion réussie 🫧" });
+    });
   } catch (err) {
     next(err);
   }
