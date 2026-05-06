@@ -4,7 +4,7 @@ const db = require("./config/db");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
+//const MySQLStore = require("express-mysql-session")(session);
 const helmet = require("helmet");
 const compression = require("compression");
 const morgan = require("morgan");
@@ -42,7 +42,7 @@ app.use(
   session({
     key: "zenbulle_sid",
     secret: process.env.SESSION_SECRET || "zenbulle-secret-key-123",
-    store: sessionStore,
+    //store: sessionStore,
     resave: false,
     saveUninitialized: false,
     cookie: {
