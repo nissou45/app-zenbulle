@@ -10,6 +10,7 @@ const compression = require("compression");
 const morgan = require("morgan");
 
 const app = express();
+app.set("trust proxy", 1);
 
 // Middlewares de base
 app.use(helmet());
