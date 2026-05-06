@@ -28,14 +28,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session Store
-const sessionStore = new MySQLStore(
-  {
-    clearExpired: true,
-    checkExpirationInterval: 900000,
-    expiration: 86400000,
-  },
-  db,
-);
+//const sessionStore = new MySQLStore(
+//{
+// clearExpired: true,
+//checkExpirationInterval: 900000,
+//expiration: 86400000,
+//},
+//db,
+//);
 
 // Session
 app.use(
