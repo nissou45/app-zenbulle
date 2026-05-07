@@ -144,6 +144,18 @@ const Dashboard = () => {
       col: "rgba(210,200,230,0.35)",
       border: "rgba(180,165,210,0.45)",
     },
+    ...(user?.role === "admin"
+      ? [
+          {
+            icon: "⚙️",
+            label: "administration",
+            sub: "gérer l'app",
+            route: ROUTES.admin,
+            col: "rgba(180,160,200,0.35)",
+            border: "rgba(150,130,180,0.45)",
+          },
+        ]
+      : []),
   ];
 
   const handleLogout = async () => {
