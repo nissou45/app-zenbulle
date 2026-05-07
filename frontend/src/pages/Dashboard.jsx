@@ -424,28 +424,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Lien Admin si role admin */}
-        {user?.role === "admin" && (
-          <div style={{ textAlign: "center", marginTop: -2 }}>
-            <button
-              onClick={() => navigate(ROUTES.admin)}
-              style={{
-                background: "transparent",
-                border: "none",
-                borderBottom: `1px solid ${t.accent}`,
-                fontFamily: "'Cormorant Garamond',serif",
-                fontStyle: "italic",
-                color: t.accent,
-                fontSize: 13,
-                cursor: "pointer",
-                paddingBottom: 2,
-              }}
-            >
-              espace admin →
-            </button>
-          </div>
-        )}
-
         {/* Déconnexion */}
         <div style={{ textAlign: "center", marginTop: -2 }}>
           <button
