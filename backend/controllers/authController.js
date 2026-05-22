@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/userModel");
+const ROLES = require("../constants/roles");
 
 exports.register = async (req, res, next) => {
   try {
@@ -26,7 +27,12 @@ exports.register = async (req, res, next) => {
       pseudo,
     });
 
-    req.session.user = { id: userId, pseudo, email, role: "user" };
+    req.session.user = {
+      id: userId,
+      pseudo,
+      email,
+      role: ROLES.USER,
+    };
     req.session.save((err) => {
       if (err) return next(err);
       return res.status(201).json({ message: "Bienvenue dans ZenBulle 🫧" });
@@ -68,4 +74,25 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.me = async (req, res, next) => {
+  try {
+    res.json({
+      id: req.session.user.id,
+      pseudo: req.session.user.pseudo,
+      email: req.session.user.email,
+      role: req.session.user.role,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err)
+      return res.status(500).json({ message: "Erreur lors de la déconnexion" });
+    res.json({ ok: true });
+  });
 };
