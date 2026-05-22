@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import { ROUTES } from '../constants/routes';
 import FloatingBubbles from '../components/FloatingBubbles';
+import Header from '../components/Header';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 
 const Accueil = () => {
@@ -27,16 +28,8 @@ const Accueil = () => {
         bubbleBorder={t.bubbleBorder}
       />
 
-      {/* Header logo */}
-      <div style={{ padding:'12px 20px 6px',
-        display:'flex', alignItems:'center',
-        justifyContent:'center',
-        position:'relative', zIndex:10 }}>
-        <span style={{ fontFamily:"'Caveat Brush',cursive",
-          fontSize:22, color:t.text }}>
-          🫧 ZenBulle
-        </span>
-      </div>
+      {/* Header unifié */}
+      <Header variant="brand" centered minimal />  
 
       {/* Contenu poussé vers le bas */}
       <main style={{
