@@ -1,0 +1,28 @@
+# Project scopes
+scopes:
+  backend: backend/**
+  frontend: frontend/src/**
+  docs: "{README.md,*.md,**/.env.example}"
+
+# Code rules to enforce
+rules:
+  forbidden_patterns:
+    - pattern: "\"zenbulle-secret-key-123\""
+      message: "Ne pas mettre le secret de session en dur dans le code"
+      replacement: "process.env.SESSION_SECRET"
+
+# Commit message rules
+commit:
+  types:
+    feat: "Nouvelle fonctionnalité"
+    fix: "Correction de bug"
+    refactor: "Refactoring"
+    chore: "Configuration/outillage"
+    docs: "Documentation"
+    style: "Style/formatage"
+    test: "Tests"
+  rules:
+    language: "French"
+    tense: "Impératif présent"
+    max_length: 50
+    scope_required: true
