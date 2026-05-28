@@ -7,7 +7,8 @@ export const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
   const [theme, setThemeState] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.theme);
-    return saved ? JSON.parse(saved) : DEFAULT_THEME;
+    if (!saved) return DEFAULT_THEME;
+    try { return JSON.parse(saved); } catch { return DEFAULT_THEME; }
   });
 
   const setTheme = (themeKey) => {
