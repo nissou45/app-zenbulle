@@ -61,3 +61,11 @@ CREATE TABLE IF NOT EXISTS `exercices` (
   `duree_expire` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `citations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `mood` varchar(50) NOT NULL,
+  `text` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mood` (`mood`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

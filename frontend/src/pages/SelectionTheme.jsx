@@ -14,7 +14,8 @@ const SelectionTheme = () => {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setEntered(true), 80);
+    const timer = setTimeout(() => setEntered(true), 80);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSelect = (theme) => {
