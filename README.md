@@ -18,7 +18,7 @@ App de bien-être mental — suivi d'humeur, journal intime, exercices de respir
 app-zenbulle/
 ├── backend/          # API Express
 │   ├── config/       # Connexion DB
-│   ├── constants/    # Constantes partagées
+
 │   ├── controllers/  # Logique métier
 │   ├── middlewares/   # Auth, rôles
 │   ├── models/       # Requêtes SQL
