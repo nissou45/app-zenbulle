@@ -1,14 +1,11 @@
-const db = require("../config/db");
+const citationsModel = require("../models/citationsModel");
 const citationsLocales = require("../data/citations.json");
 
 exports.getRandomCitation = async (req, res, next) => {
   try {
     const { mood } = req.query;
 
-    const [rows] = await db.query(
-      "SELECT text FROM citations WHERE mood = ? ORDER BY RAND() LIMIT 1",
-      [mood],
-    );
+    const rows = await citationsModel.getRandomByMood(mood);
 
     if (rows.length > 0) {
       return res.json({ text: rows[0].text });

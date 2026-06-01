@@ -22,3 +22,25 @@ exports.create = async (user) => {
   ]);
   return result.insertId;
 };
+
+exports.getAll = async () => {
+  const [rows] = await db.query(
+    "SELECT id, pseudo, email, role, created_at FROM utilisateurs",
+  );
+  return rows;
+};
+
+exports.updateRole = async (id, role) => {
+  await db.query("UPDATE utilisateurs SET role = ? WHERE id = ?", [role, id]);
+};
+
+exports.deleteById = async (id) => {
+  await db.query("DELETE FROM utilisateurs WHERE id = ?", [id]);
+};
+
+exports.count = async () => {
+  const [[{ totalUsers }]] = await db.query(
+    "SELECT COUNT(*) as totalUsers FROM utilisateurs",
+  );
+  return totalUsers;
+};

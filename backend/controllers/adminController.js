@@ -1,23 +1,20 @@
-const db = require("../config/db");
-const ROLES = require("../constants/roles");
+const userModel = require("../models/userModel");
+const moodModel = require("../models/moodModel");
+const journalModel = require("../models/journalModel");
+const citationsModel = require("../models/citationsModel");
 
 exports.getStats = async (req, res, next) => {
   try {
-    const [[{ totalUsers }]] = await db.query(
-      "SELECT COUNT(*) as totalUsers FROM utilisateurs",
-    );
-    const [[{ totalMoods }]] = await db.query(
-      "SELECT COUNT(*) as totalMoods FROM daily_moods",
-    );
-    const [[{ totalJournals }]] = await db.query(
-      "SELECT COUNT(*) as totalJournals FROM journal_entries",
-    );
+    const [totalUsers, totalMoods, totalJournals, moodRows] =
+      await Promise.all([
+        userModel.count(),
+        moodModel.countAll(),
+        journalModel.countAll(),
+        moodModel.getStats(),
+      ]);
 
-    const [moods] = await db.query(
-      "SELECT label, COUNT(*) as count FROM daily_moods dm JOIN moods m ON dm.mood_id = m.id GROUP BY label",
-    );
     const moodStats = {};
-    moods.forEach((m) => (moodStats[m.label] = m.count));
+    moodRows.forEach((m) => (moodStats[m.label] = m.count));
 
     res.json({ totalUsers, totalMoods, totalJournals, moodStats });
   } catch (err) {
@@ -27,9 +24,7 @@ exports.getStats = async (req, res, next) => {
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const [users] = await db.query(
-      "SELECT id, pseudo, email, role, created_at FROM utilisateurs",
-    );
+    const users = await userModel.getAll();
     res.json(users);
   } catch (err) {
     next(err);
@@ -39,18 +34,15 @@ exports.getUsers = async (req, res, next) => {
 exports.updateUserRole = async (req, res, next) => {
   try {
     const { role } = req.body;
-    if (![ROLES.USER, ROLES.ADMIN].includes(role))
+    if (!["user", "admin"].includes(role)) {
       return res.status(400).json({ message: "Rôle invalide" });
-
-    if (parseInt(req.params.id) === req.session.user.id)
+    }
+    if (parseInt(req.params.id) === req.session.user.id) {
       return res
         .status(400)
         .json({ message: "Impossible de modifier son propre rôle" });
-
-    await db.query("UPDATE utilisateurs SET role = ? WHERE id = ?", [
-      role,
-      req.params.id,
-    ]);
+    }
+    await userModel.updateRole(req.params.id, role);
     res.json({ ok: true });
   } catch (err) {
     next(err);
@@ -59,12 +51,12 @@ exports.updateUserRole = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
-    if (parseInt(req.params.id) === req.session.user.id)
+    if (parseInt(req.params.id) === req.session.user.id) {
       return res
         .status(400)
         .json({ message: "Impossible de se supprimer soi-même" });
-
-    await db.query("DELETE FROM utilisateurs WHERE id = ?", [req.params.id]);
+    }
+    await userModel.deleteById(req.params.id);
     res.json({ ok: true });
   } catch (err) {
     next(err);
@@ -73,7 +65,7 @@ exports.deleteUser = async (req, res, next) => {
 
 exports.getCitations = async (req, res, next) => {
   try {
-    const [citations] = await db.query("SELECT * FROM citations");
+    const citations = await citationsModel.getAll();
     res.json(citations);
   } catch (err) {
     next(err);
@@ -83,10 +75,7 @@ exports.getCitations = async (req, res, next) => {
 exports.createCitation = async (req, res, next) => {
   try {
     const { mood, text } = req.body;
-    await db.query("INSERT INTO citations (mood, text) VALUES (?, ?)", [
-      mood,
-      text,
-    ]);
+    await citationsModel.create(mood, text);
     res.json({ ok: true });
   } catch (err) {
     next(err);
@@ -96,14 +85,10 @@ exports.createCitation = async (req, res, next) => {
 exports.updateCitation = async (req, res, next) => {
   try {
     const { mood, text } = req.body;
-    if (!mood || !text)
+    if (!mood || !text) {
       return res.status(400).json({ message: "Champs manquants" });
-
-    await db.query("UPDATE citations SET mood = ?, text = ? WHERE id = ?", [
-      mood,
-      text,
-      req.params.id,
-    ]);
+    }
+    await citationsModel.update(req.params.id, mood, text);
     res.json({ ok: true });
   } catch (err) {
     next(err);
@@ -112,7 +97,7 @@ exports.updateCitation = async (req, res, next) => {
 
 exports.deleteCitation = async (req, res, next) => {
   try {
-    await db.query("DELETE FROM citations WHERE id = ?", [req.params.id]);
+    await citationsModel.deleteById(req.params.id);
     res.json({ ok: true });
   } catch (err) {
     next(err);
