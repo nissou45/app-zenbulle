@@ -108,7 +108,7 @@ const Dashboard = () => {
   }, []);
 
   const streak = calcStreak(moods);
-  const lastMood = moods.length ? moods[moods.length - 1] : null;
+  const lastMood = moods.length ? moods[0] : null;
   const moodColor = lastMood ? MOOD_COLORS[lastMood.value] : "#D4A853";
 
   const cards = [
