@@ -28,7 +28,7 @@ router.get("/me", auth, (req, res) => {
 });
 
 // Logout
-router.post("/logout", (req, res) => {
+router.post("/logout", auth, (req, res) => {
   req.session.destroy((err) => {
     if (err)
       return res.status(500).json({ message: "Erreur lors de la déconnexion" });
