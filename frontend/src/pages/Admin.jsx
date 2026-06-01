@@ -221,10 +221,6 @@ const Admin = () => {
   const [data, setData] = useState({ stats: null, users: [], citations: [] });
   const [editingCitation, setEditingCitation] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, [activeTab]);
-
   const fetchData = async () => {
     try {
       if (activeTab === "stats") {
@@ -241,6 +237,10 @@ const Admin = () => {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
 
   const deleteUser = async (id) => {
     if (window.confirm("Supprimer cet utilisateur ?")) {
