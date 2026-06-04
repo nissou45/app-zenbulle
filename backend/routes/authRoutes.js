@@ -18,6 +18,12 @@ router.post("/login", authLimiter, authController.login);
 router.get("/me", auth, authController.me);
 
 // Logout
-router.post("/logout", authController.logout);
+router.post("/logout", auth, (req, res) => {
+  req.session.destroy((err) => {
+    if (err)
+      return res.status(500).json({ message: "Erreur lors de la déconnexion" });
+    res.json({ ok: true });
+  });
+});
 
 module.exports = router;

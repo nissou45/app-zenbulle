@@ -16,10 +16,6 @@ const Admin = () => {
   const [data, setData] = useState({ stats: null, users: [], citations: [] });
   const [editingCitation, setEditingCitation] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, [activeTab]);
-
   const fetchData = async () => {
     try {
       if (activeTab === "stats") {
@@ -37,6 +33,24 @@ const Admin = () => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
+
+  const deleteUser = async (id) => {
+    if (window.confirm("Supprimer cet utilisateur ?")) {
+      await api.delete(`/admin/users/${id}`);
+      fetchData();
+    }
+  };
+
+  const toggleRole = async (user) => {
+    const newRole = user.role === "admin" ? "user" : "admin";
+    if (window.confirm(`Passer ${user.pseudo} en ${newRole} ?`)) {
+      await api.put(`/admin/users/${user.id}`, { role: newRole });
+      fetchData();
+    }
+  };
   const deleteCitation = async (id) => {
     await api.delete(`/admin/citations/${id}`);
     fetchData();
