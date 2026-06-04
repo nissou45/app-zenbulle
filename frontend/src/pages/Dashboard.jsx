@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import { useAuth } from "../hooks/useAuth";
 import { ROUTES } from "../constants/routes";
-import { ROLES } from "../constants/roles";
 import FloatingBubbles from "../components/FloatingBubbles";
 import Header from "../components/Header";
 import DashboardHero from "../components/dashboard/DashboardHero";
@@ -56,7 +55,7 @@ const CARDS = [
 
 function CardGrid({ cards, user, theme, tilePadding, tileLabelSize, gridGap, onNavigate }) {
   const visible = cards.filter(
-    (c) => !c.adminOnly || user?.role === ROLES.ADMIN,
+    (c) => !c.adminOnly || user?.role === "admin",
   );
 
   return (
@@ -123,56 +122,6 @@ const Dashboard = () => {
       .catch(() => setMoods([]));
   }, []);
 
-  const streak = calcStreak(moods);
-  const lastMood = moods.length ? moods[0] : null;
-  const moodColor = lastMood ? MOOD_COLORS[lastMood.value] : "#D4A853";
-
-  const cards = [
-    {
-      icon: "🌬",
-      label: "respirer",
-      sub: "exercice guidé",
-      route: ROUTES.respiration,
-      col: "rgba(180,215,210,0.35)",
-      border: "rgba(140,190,185,0.45)",
-    },
-    {
-      icon: "🫧",
-      label: "émotion du jour",
-      sub: "comment je me sens",
-      route: ROUTES.emotion,
-      col: "rgba(200,185,225,0.35)",
-      border: "rgba(170,150,205,0.45)",
-    },
-    {
-      icon: "🌙",
-      label: "journal du soir",
-      sub: "écrire ma pensée",
-      route: ROUTES.journal,
-      col: "rgba(225,200,200,0.35)",
-      border: "rgba(200,165,165,0.45)",
-    },
-    {
-      icon: "✦",
-      label: "tes bulles",
-      sub: "relire mes écrits",
-      route: ROUTES.mesBulles,
-      col: "rgba(210,200,230,0.35)",
-      border: "rgba(180,165,210,0.45)",
-    },
-    ...(user?.role === "admin"
-      ? [
-          {
-            icon: "⚙️",
-            label: "administration",
-            sub: "gérer l'app",
-            route: ROUTES.admin,
-            col: "rgba(180,160,200,0.35)",
-            border: "rgba(150,130,180,0.45)",
-          },
-        ]
-      : []),
-  ];
   const handleLogout = async () => {
     await logout();
     navigate(ROUTES.accueil);
