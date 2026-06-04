@@ -1,12 +1,5 @@
 require("dotenv").config();
 
-if (!process.env.SESSION_SECRET) {
-  console.error(
-    "FATAL: SESSION_SECRET n'est pas défini. Ajoutez-le dans le fichier .env",
-  );
-  process.exit(1);
-}
-
 const db = require("./config/db");
 
 const express = require("express");
