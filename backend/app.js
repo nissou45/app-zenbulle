@@ -4,7 +4,6 @@ const db = require("./config/db");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session);
 const helmet = require("helmet");
 const compression = require("compression");
 const morgan = require("morgan");
@@ -18,7 +17,12 @@ app.use(compression());
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(
   cors({
-    origin: ["https://app-zenbulle.vercel.app", "http://localhost:5173"],
+    origin: [
+      "https://app-zenbulle.vercel.app",
+      "http://localhost:5173",
+      "https://app-zenbulle.onrender.com",
+      "http://localhost:3000",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -29,21 +33,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Session Store
-const sessionStore = new MySQLStore(
-  {
-    clearExpired: true,
-    checkExpirationInterval: 900000,
-    expiration: 86400000,
-  },
-  db,
-);
+let sessionStore;
+if (db) {
+  const MySQLStore = require("express-mysql-session")(session);
+  sessionStore = new MySQLStore(
+    {
+      clearExpired: true,
+      checkExpirationInterval: 900000,
+      expiration: 86400000,
+    },
+    db,
+  );
+}
 
 // Session
 app.use(
   session({
     key: "zenbulle_sid",
     secret: process.env.SESSION_SECRET || "zenbulle-secret-key-123",
-    store: sessionStore,
+    store: sessionStore || undefined,
     resave: false,
     saveUninitialized: false,
     cookie: {
