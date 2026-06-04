@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/userModel");
-const ROLES = require("../constants/roles");
 
 exports.register = async (req, res, next) => {
   try {
@@ -31,7 +30,7 @@ exports.register = async (req, res, next) => {
       id: userId,
       pseudo,
       email,
-      role: ROLES.USER,
+      role: "user",
     };
     req.session.save((err) => {
       if (err) return next(err);
